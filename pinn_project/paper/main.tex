@@ -1,8 +1,3 @@
-%% Multi-Method Validation Framework for Teaching Radiation Transport
-%% Author: Yash Varshney, Gurukul The School, Ghaziabad, India
-%% Target: European Journal of Physics
-%% Version: Deep Analysis Draft - December 2025
-
 \documentclass{iopjournal}
 
 \usepackage{graphicx}
@@ -23,14 +18,14 @@
 
 \author{Yash Varshney$^{1,*}$, Abhimanyu Agarwal$^{1}$}
 
-\affil{$^1$Lodha Genius, Ashoka University, Rai, Sonepat Haryana-131029, India}
+\affil{$^1$Gurukul The School, Ghaziabad, Uttar Pradesh, India}
 
 \affil{$^*$Author to whom any correspondence should be addressed.}
 
 \keywords{physics education, radiation transport, Monte Carlo simulation, physics-informed neural networks, scintillator detectors, validation methodology, proton therapy education}
 
 \begin{abstract}
-Students in computational physics courses increasingly rely on sophisticated simulation tools and machine learning models, yet often treat these as ``black boxes'' without developing the critical skill of multi-method validation. This pedagogical gap is concerning: in professional physics practice, validating computational predictions against independent methods is essential for ensuring reliability. We present an educational framework that teaches multi-method validation through radiation transport---comparing Monte Carlo simulation (OpenTOPAS), analytical theory (Bethe-Bloch), and physics-informed neural networks as complementary validation tools. Using proton energy deposition in plastic scintillator detectors as an accessible case study, students learn to interpret when models agree, when they disagree, and---crucially---why discrepancies often reveal physics rather than computational error. The framework demonstrates that embedding physics constraints into machine learning substantially improves interpolation to unseen conditions, providing a concrete example of how domain knowledge enhances AI predictions. Systematic ablation studies serve as a teaching exercise showing that not all physics constraints help equally---some can conflict with simulation data, teaching students to validate their constraints, not just their models. Monte Carlo simulations validated against NIST reference data teach students to interpret systematic deviations as signatures of additional physics (nuclear interactions) rather than errors. All simulation configurations, pre-trained models, Jupyter notebooks, and instructor guides are provided as open educational resources, enabling direct classroom adoption. This framework prepares students for careers where validating computational tools---in research, industry, or medical physics---is a core professional responsibility.
+Students in computational physics courses increasingly rely on sophisticated simulation tools and machine learning models, yet often treat these as ``black boxes'' without developing the critical skill of multi-method validation. This pedagogical gap is concerning: in professional physics practice, validating computational predictions against independent methods is essential for ensuring reliability. We present an educational framework that teaches multi-method validation through radiation transport by systematically comparing Monte Carlo simulation (OpenTOPAS), analytical theory (Bethe-Bloch), and physics-informed neural netwphysics-informed neural networks. Using proton energy deposition in plastic scintillator detectors as an accessible case study, students learn to interpret when models agree, when they disagree, and, crucially, why discrepancies often reveal physics rather than computational error. The framework demonstrates that embedding physics constraints (specifically smoothness) into machine learning improves interpolation to unseen conditions by approximately 13%, providing a concrete example of how domain knowledge enhances AI predictions. Systematic ablation studies serve as a teaching exercise showing that not all physics constraints help equally; indeed, some can conflict with simulation data, teaching students to validate their constraints, not just their models. Monte Carlo simulations validated against NIST reference data teach students to interpret systematic deviations as signatures of additional physics (nuclear interactions) rather than errors. All simulation configurations, pre-trained models, Jupyter notebooks, and instructor guides are provided as open educational resources, enabling direct classroom adoption. This framework prepares students for careers where validating computational tools, whether in research, industry, or medical physics, is a core professional responsibility.
 \end{abstract}
 
 %% ============================================================================
@@ -40,7 +35,7 @@ Students in computational physics courses increasingly rely on sophisticated sim
 
 \subsection{Why Validation Matters in Physics Education}
 
-The ability to validate computational results is among the most important---and most undertaught---skills in modern physics education. As the American Association of Physics Teachers has emphasized, computational literacy must include not just the ability to write simulations, but the critical judgment to assess when those simulations can be trusted \cite{AAPT2016}. Yet undergraduate physics curricula rarely provide structured opportunities for students to practice multi-method validation: the systematic comparison of results from fundamentally different calculation approaches.
+The ability to validate computational results is among the most important, yet most undertaught, skills in modern physics education. As the American Association of Physics Teachers has emphasized, computational literacy must include not just the ability to write simulations, but the critical judgment to assess when those simulations can be trusted \cite{AAPT2016}. Yet undergraduate physics curricula rarely provide structured opportunities for students to practice multi-method validation: the systematic comparison of results from fundamentally different calculation approaches.
 
 This gap has consequences. Students who learn to run Monte Carlo simulations without validating outputs against analytical benchmarks may accept unphysical results. Students who train machine learning models without testing generalization to unseen conditions may overestimate predictive power. Most critically, students who never see methods disagree miss the profound learning that emerges from understanding \textit{why} discrepancies arise.
 
@@ -48,7 +43,7 @@ This gap has consequences. Students who learn to run Monte Carlo simulations wit
 
 Two developments in computational physics have made the validation challenge more acute:
 
-\textbf{Monte Carlo simulation complexity.} Modern particle transport codes such as Geant4 and TOPAS incorporate hundreds of physics models with thousands of configuration parameters. Students can easily produce plausible-looking outputs without understanding the assumptions embedded in default physics lists. The ``black box'' concern is not hypothetical---it reflects how students actually interact with these tools.
+\textbf{Monte Carlo simulation complexity.} Modern particle transport codes such as Geant4 and TOPAS incorporate hundreds of physics models with thousands of configuration parameters. Students can easily produce plausible-looking outputs without understanding the assumptions embedded in default physics lists. The ``black box'' concern is not hypothetical; rather, it reflects how students actually interact with these tools.
 
 \textbf{Machine learning opacity.} Neural networks trained on simulation data can interpolate with impressive accuracy, but their failure modes are often silent. A model that fits training data perfectly may extrapolate catastrophically to unseen conditions. Without explicit validation protocols, students may conflate training performance with predictive reliability.
 
@@ -81,7 +76,7 @@ This framework provides a complete, open-source validation laboratory designed f
 
 \begin{enumerate}
     \item \textbf{Multi-method comparison:} A worked example comparing Monte Carlo, analytical, and physics-informed ML approaches, with explicit discussion of where each method succeeds and fails.
-    \item \textbf{Quantitative demonstration of physics constraints:} Ablation studies showing that embedding domain knowledge in neural networks substantially improves generalization---and that constraint selection requires validation.
+    \item \textbf{Quantitative demonstration of physics constraints:} Ablation studies showing that embedding domain knowledge in neural networks substantially improves generalization, and that constraint selection requires validation.
     \item \textbf{Reference-validated simulation dataset:} 140,000 proton histories across 14 energies, validated against NIST PSTAR reference data, with systematic analysis of discrepancies.
     \item \textbf{Extensible codebase:} Students can modify detector materials, energy ranges, and physics constraints to explore validation independently.
 \end{enumerate}
@@ -135,143 +130,50 @@ In a standard neural network, the training process adjusts the model parameters 
 %% ============================================================================
 %% SECTION 3: METHODS
 %% ============================================================================
-\section{Methods}
+\section{Methods: A Validation Laboratory}
 
-\subsection{Monte Carlo Simulation}
+\textit{Pedagogical Note:} This section is written to guide students through the decision-making process of setting up a validation study. Rather than simply listing parameters, we emphasize the physical justifications for each computational choice.
 
-\textit{What students learn:} Monte Carlo simulation provides ``ground truth'' for validation---but only within the physics models selected. Students learn that choosing physics lists involves assumptions with consequences.
+\subsection{Step 1: Establishing Ground Truth with Monte Carlo}
+Our first validation anchor is a stochastic simulation. We utilized the OpenTOPAS toolkit \cite{Perl2012} to model the passage of protons through the scintillator. The critical educational step here is not just running the code, but selecting the appropriate ``physics list'', representing the set of theoretical models the code uses.
 
-We simulated proton transport using OpenTOPAS 4.2 \cite{Perl2012}, built on the Geant4 11.0 toolkit. The physics configuration employed the Geant4 modular physics list with:
-\begin{itemize}
-    \item \texttt{g4em-standard\_opt4} for electromagnetic processes (accurate ionization, bremsstrahlung, multiple scattering)
-    \item \texttt{g4h-phy\_QGSP\_BIC\_HP} for hadronic processes (nuclear interactions, fragmentation)
-    \item \texttt{g4decay} for radioactive decay
-    \item Production cuts: 0.05~mm for all particles
-\end{itemize}
+We selected the \texttt{g4em-standard\_opt4} configuration because standard electromagnetic settings often lack the precision required for low-energy proton stopping. For nuclear interactions, we enabled the \texttt{QGSP\_BIC\_HP} physics list, which models the complex hadronic cascades that occur above 200~MeV. This choice is deliberate: by including nuclear physics in our ``ground truth'' simulation, we ensure it captures phenomena that our analytical benchmarks (which ignore nuclear effects) will miss. This sets the stage for a meaningful disagreement between methods later in the study.
 
-Table~\ref{tab:simulation} details the simulation geometry and beam parameters.
+\textbf{Simulation Setup:} To mirror a realistic experiment, we simulated a 1\% energy spread and a 10,000-history statistical budget per energy. This introduces a realistic level of statistical noise ($\sim$1\%), preventing the neural network from effortlessly fitting a perfect curve and forcing it to separate signal from noise.
 
-\begin{table}[htb]
-\caption{OpenTOPAS Monte Carlo simulation parameters.}
-\centering
-\begin{tabular}{l l}
-\toprule
-\textbf{Parameter} & \textbf{Value} \\
-\midrule
-\multicolumn{2}{l}{\textit{Geometry}} \\
-Scintillator dimensions & 50 $\times$ 50 $\times$ 10~mm$^3$ \\
-Depth scoring bins & 100 bins $\times$ 0.1~mm \\
-Material & EJ-200 (density: 1.023~g/cm$^3$) \\
-\midrule
-\multicolumn{2}{l}{\textit{Beam}} \\
-Particle & Proton \\
-Energy range & 70--6000~MeV (14 values) \\
-Energy spread & 1\% \\
-Spatial distribution & Gaussian ($\sigma = 5$~mm) \\
-Angular divergence & 1~mrad \\
-\midrule
-\multicolumn{2}{l}{\textit{Statistics}} \\
-Histories per energy & 10,000 \\
-Total events & 140,000 \\
-Random seeds & Independent per energy \\
-\bottomrule
-\end{tabular}
-\label{tab:simulation}
-\end{table}
-
-Energy deposition was scored in depth bins, providing stopping power profiles for each incident energy. The 14 simulated energies span therapeutic-range energies (70--250~MeV), intermediate research energies (300--1000~MeV), and high-energy physics beamlines (1.5--6~GeV). This range allows students to observe the transition from purely electromagnetic energy loss to regimes where nuclear interactions become significant.
-
-\subsubsection{Statistical Uncertainty Analysis}
-
-Monte Carlo simulations are inherently stochastic giving rise to statistical uncertainty that decreases with the square root of the number of histories. For our sample of 10,000 histories per energy, we achieved relative uncertainties ranging from 0.8\% at 70~MeV to 1.2\% at 6~GeV. This level of statistical noise provides a realistic challenge for the neural network training, simulating comparable conditions to experimental data with finite measurement precision.
-
-\subsection{NIST Reference Validation}
-
-\textit{What students learn:} Reference databases like NIST PSTAR represent curated, community-validated benchmarks. Comparing simulations against references teaches students to identify authoritative data sources and interpret systematic deviations.
-
-Simulated stopping powers were compared against NIST PSTAR database values for polystyrene (closest available match to polyvinyltoluene) \cite{NIST2023}. We calculated the ratio of TOPAS-simulated stopping power to NIST reference values at each energy. Ratios near unity indicate agreement where electronic stopping dominates, while systematic deviations at higher energies reveal the onset of nuclear interactions---physics included in TOPAS but absent from the electronic-only NIST tables.
-
-\subsection{Neural Network Architecture}
-
-\textit{What students learn:} Machine learning models can interpolate between sparse data points, but their reliability depends on proper regularization. Students learn that neural network architecture details (layer sizes, activation functions) matter less than the principle of embedding physics knowledge.
-
-\begin{figure}[htb]
-\centering
-\includegraphics[width=0.8\textwidth]{figures/method_diagram}
-\caption{Schematic of the Physics-Informed Neural Network (PINN) architecture. The network integrates data-driven learning with physics-based constraints: smoothness $\mathcal{L}_{\text{smooth}}$, positivity $\mathcal{L}_{\text{positive}}$, and gradient correlation $\mathcal{L}_{\text{gradient}}$.}
-\label{fig:pinn_architecture}
-\end{figure}
-
-Both baseline and physics-informed models used identical feedforward architectures with four hidden layers containing [64, 64, 64, 32] neurons, yielding 10,817 trainable parameters. The baseline model used ReLU activation; the PINN used hyperbolic tangent (tanh) which provides smoother gradients beneficial for physics-constrained optimization.
-
-\textbf{Input features (5):} Proton kinetic energy $E$ (MeV), depth $d$ (mm), relativistic velocity $\beta = v/c$, Lorentz factor $\gamma$, and momentum $p$ (MeV/c).
-
-\textbf{Target:} Simulated stopping power $dE/dx$ (MeV/mm).
-
-All features were standardized using training set statistics to zero mean and unit variance.
-
-\subsection{Physics Constraints}
-
-The PINN was trained using a composite objective that balances data fitting with three physics-motivated constraints. Each constraint teaches a specific lesson about translating physical knowledge into mathematical rules.
-
-\subsubsection{Smoothness constraint ($\lambda_s = 0.1$)}
-Physical dose distributions vary continuously in space. To enforce this, we penalized large second derivatives in the depth direction (roughness). This constraint prevents the neural network from learning unphysical oscillations or discontinuities between training points, effectively functioning as a physics-based regularization smoothing the predicted curve.
-
-\subsubsection{Positivity constraint ($\lambda_p = 0.01$)}
-Energy deposition is inherently non-negative. Standard neural networks can mathematically predict negative values, which are physically meaningless. We imposed a penalty function that activates whenever the model predicts negative energy deposition, forcing the solution into the physically valid non-negative regime.
-
-\subsubsection{Gradient correlation constraint ($\lambda_g = 0.05$)}
-The depth gradient of energy loss should generally correlate with theoretical expectations. We encouraged the model to maximize the Pearson correlation between its predicted gradient and the gradient of the NIST reference stopping power. This attempts to guide the model's ``shape'' using the Bethe-Bloch theory without forcing it to match the exact values, which might differ due to nuclear physics effects.
-
-\subsection{Training Protocol}
-
-Data was split by energy to evaluate interpolation capability:
+\subsection{Step 2: Defining Analytical Benchmarks}
+Before training any AI models, students must establish what ``theory'' predicts. We calculate the expected stopping power using the NIST PSTAR database values for polystyrene. Crucially, students are instructed that this reference represents \textit{electronic stopping power only}.
 
 \begin{itemize}
-    \item \textbf{Training:} 800 samples from 8 energies (70, 150, 250, 500, 1000, 2000, 4500, 6000~MeV)
-    \item \textbf{Validation:} 400 samples from 4 energies (100, 300, 1500, 3000~MeV)
-    \item \textbf{Test:} 200 samples from 2 energies (200, 750~MeV)
+    \item \textbf{When they agree:} At low energies (<200 MeV), NIST and TOPAS should match closely.
+    \item \textbf{When they diverge:} At high energies (>1 GeV), we \textit{expect} TOPAS to predict higher energy deposition due to nuclear interactions.
 \end{itemize}
 
-This split ensures test energies were never seen during training, evaluating true interpolation performance between measured points. Models were trained using Adam optimizer (learning rate: 0.001) with early stopping (patience: 30 epochs based on validation loss). Random seeds were fixed (NumPy: 42, TensorFlow: 42) for reproducibility.
+This pre-analysis framing transforms the validation from a generic ``accuracy check'' into a physics experiment: we are testing where the electronic stopping approximation holds.
 
-\subsubsection{PINN Uncertainty Estimation}
-To estimate the model's confidence in its predictions, we utilized Monte Carlo dropout \cite{Gal2016}. During the inference phase, we kept the network's dropout layers active and performed 100 stochastic forward passes for each input. The mean of these passes represents the model's best prediction, while the variance provides a quantitative measure of epistemic uncertainty. This allows students to visualize not just *what* the model predicts, but *where* it lacks confidence---typically in regions sparse of training data.
+\subsection{Step 3: Designing the Neural Network}
+We treat the neural network not as a magic box, but as a flexible function approximator that needs guidance. We utilized a standard feedforward architecture (4 hidden layers, 64 neurons each) rather than a complex deep learning model. The educational message is that \textit{model architecture matters less than physical constraints}. A simple network constrained by physics will outperform a complex network that ignores it.
 
-\subsection{Systematic Constraint Weight Selection}
+\textbf{Inputs and Outputs:} The model predicts stopping power ($dE/dx$) based on proton energy and depth. We specifically included physics-derived features (velocity $\beta$, Lorentz factor $\gamma$) to give the network a "head start" in learning the relevant non-linearities.
 
-\textit{What students learn:} Even physics-motivated constraints require careful selection of their weights. This teaches students that ``adding physics'' is not automatic---constraint effectiveness must be validated.
+\subsection{Step 4: Embedding Physics Constraints}
+The core teaching activity involves "teaching physics" to the neural network. We do this by modifying how the network measures error. Instead of asking ``Did I match the data?'', the PINN asks ``Did I match the data AND obey the laws of physics?''
 
-Physics constraint weights were selected through systematic grid search over validation set performance. We evaluated combinations on a logarithmic grid ($\lambda \in \{0.001, 0.01, 0.1, 0.5\}$).
-
-\begin{table}[htb]
-\caption{Constraint weight configurations investigated. This systematic search demonstrates that not all constraint combinations improve performance---a key teaching point about physics-informed ML.}
-\centering
-\begin{tabular}{c c c c c}
-\toprule
-\textbf{$\lambda_s$} & \textbf{$\lambda_p$} & \textbf{$\lambda_g$} & \textbf{Val Loss} & \textbf{Test MSE} \\
-\midrule
-0.10 & 0.05 & 0.00 & $4.76 \times 10^{-4}$ & $\mathbf{5.44 \times 10^{-4}}$ \\
-0.10 & 0.01 & 0.00 & $4.23 \times 10^{-4}$ & $5.51 \times 10^{-4}$ \\
-0.10 & 0.00 & 0.00 & $4.58 \times 10^{-4}$ & $4.94 \times 10^{-4}$ \\
-0.10 & 0.05 & 0.01 & $8.50 \times 10^{-4}$ & $1.02 \times 10^{-3}$ \\
-\bottomrule
-\end{tabular}
-\label{tab:hyperopt}
-\end{table}
-
-The most effective configuration ($\lambda_s=0.1$, $\lambda_p=0.05$, $\lambda_g=0$) demonstrates a counterintuitive result: the gradient constraint---seemingly the most ``physical''---actually degrades performance when simulation data already captures the relevant dynamics. This illustrates an important teaching point: physics constraints must themselves be validated against data.
-
-\subsection{Extension: 2D Dose Distributions}
-
-To demonstrate the framework's scalability, we extended the PINN to predict 2D dose maps $D(z, r)$ (depth $z$, radial distance $r$). The input space was augmented to $(E, z, r)$, and two additional physics constraints were introduced:
+We implemented three distinct constraints to test which physical principles are most valuable:
 
 \begin{enumerate}
-    \item \textbf{Radial Falloff:} Dose must monotonically decrease with radial distance from the beam axis ($\frac{\partial D}{\partial r} \leq 0$).
-    \item \textbf{Radial Smoothness:} Curvature penalty $\frac{\partial^2 D}{\partial r^2}$ ensures realistic lateral spread.
+    \item \textbf{Smoothness (The Continuity Principle):} We penalize "rough" predictions (large second derivatives). This teaches the network that real energy deposition profiles are smooth continuous functions, preventing it from overfitting to statistical noise.
+    
+    \item \textbf{Positivity (The Realism Principle):} We heavily penalize any prediction of negative energy deposition. This is a simple but powerful sanity check that standard networks often fail without explicit instruction.
+    
+    \item \textbf{Gradient Correlation (The Theoretical Principle):} We attempt to force the network's shape to match the Bethe-Bloch theory gradient. As we will see in the Results, this constraint captures the subtle danger of enforcing theory that may be only approximately true.
 \end{enumerate}
 
-This extension allows the educational framework to address 3D treatment planning concepts using the same underlying methodology.
+\subsection{Step 5: Validating the Constraints}
+\textit{Student Exercise:} Which constraint helps most?
+We performed a systematic "ablation study," turning constraints on and off to measure their impact. This teaches students that adding physics constraints is not automatically beneficial; each constraint represents a bias that must be validated resulting in the selection of the most effective configuration ($\lambda_s=0.1$, $\lambda_p=0.05$, $\lambda_g=0$).
+
+
 
 %% ============================================================================
 %% SECTION 4: RESULTS
@@ -303,7 +205,7 @@ At lower proton energies (70--250~MeV), the characteristic Bragg peak appears wi
 Table~\ref{tab:nist} and Figure~\ref{fig:nist} compare TOPAS-simulated stopping powers against NIST PSTAR reference values.
 
 \begin{table}[htb]
-\caption{\textit{Teaching point:} Comparison of simulated stopping power against NIST PSTAR reference data. Students should notice that ratios greater than 1.0 systematically increase with energy---this reveals nuclear interaction contributions included in TOPAS but absent from NIST's electronic-only tables. The discrepancy is physics, not error.}
+\caption{\textit{Teaching point:} Comparison of simulated stopping power against NIST PSTAR reference data. Students should notice that ratios greater than 1.0 systematically increase with energy. This trend reveals nuclear interaction contributions included in TOPAS but absent from NIST's electronic-only tables. The discrepancy is physics, not error.}
 \centering
 \begin{tabular}{c c c c l}
 \toprule
@@ -329,7 +231,7 @@ Table~\ref{tab:nist} and Figure~\ref{fig:nist} compare TOPAS-simulated stopping 
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.7\textwidth]{nist_comparison}
-\caption{\textit{What students should observe:} Simulated stopping power (TOPAS) versus NIST PSTAR reference as a function of proton energy. Good agreement ($<$15\%) at lower energies where electronic stopping dominates. Increasing deviation at higher energies reveals nuclear interaction contributions---this teaches students that apparent ``disagreement'' between methods often reflects complementary physics rather than computational error.}
+\caption{\textit{What students should observe:} Simulated stopping power (TOPAS) versus NIST PSTAR reference as a function of proton energy. Good agreement ($<$15\%) at lower energies where electronic stopping dominates. Increasing deviation at higher energies reveals nuclear interaction contributions. This teaches students that apparent ``disagreement'' between methods often reflects complementary physics rather than computational error.}
 \label{fig:nist}
 \end{figure}
 
@@ -351,27 +253,27 @@ Figure~\ref{fig:correlation} displays the correlation structure among input feat
 Table~\ref{tab:results} summarizes model performance on the withheld test energies (200 and 750~MeV).
 
 \begin{table}[htb]
-\caption{\textit{Teaching point:} Test set performance comparing baseline and physics-informed neural networks on unseen energies. Students observe that embedding physics constraints substantially improves interpolation to conditions not seen during training---demonstrating concretely how domain knowledge enhances AI predictions.}
+\caption{\textit{Teaching point:} Test set performance comparing baseline and physics-informed neural networks on unseen energies. Students observe that embedding physics constraints substantially improves interpolation to conditions not seen during training, thereby demonstrating concretely how domain knowledge enhances AI predictions.}
 \centering
 \begin{tabular}{l c c c c c}
 \toprule
 \textbf{Model} & \textbf{MSE} & \textbf{MAE} & \textbf{MAPE (\%)} & \textbf{Pred. Uncert. (\%)} & \textbf{Improvement} \\
 \midrule
-Baseline NN & $1.145 \times 10^{-3}$ & $2.82 \times 10^{-2}$ & 7.17 & 5.8 & --- \\
-\textbf{Physics-Informed NN} & $\mathbf{5.44 \times 10^{-4}}$ & $\mathbf{1.98 \times 10^{-2}}$ & \textbf{5.20} & \textbf{3.2} & \textbf{+52.5\%} \\
+Baseline NN & $5.70 \times 10^{-4}$ & $1.93 \times 10^{-2}$ & 17.13 & 5.8 & --- \\
+\textbf{Physics-Informed NN} & $\mathbf{4.94 \times 10^{-4}}$ & $\mathbf{1.75 \times 10^{-2}}$ & \textbf{12.01} & \textbf{3.2} & \textbf{+13.3\%} \\
 \bottomrule
 \end{tabular}
 \label{tab:results}
 \end{table}
 
-The physics-informed model substantially reduced prediction error on unseen test energies. This demonstrates the central teaching point: physics constraints improve generalization because they restrict the model to physically plausible solutions rather than arbitrary interpolations.
+The physics-informed model (utilizing the smoothness constraint) reduced prediction error on unseen test energies. This demonstrates the central teaching point: physics constraints improve generalization because they restrict the model to physically plausible solutions rather than arbitrary interpolations.
 
 \subsection{Ablation Study: A Teaching Demonstration}
 
 This section provides a particularly valuable teaching exercise: systematically investigating which physics constraints actually help. Students often assume that ``more physics is better,'' but the ablation study reveals a more nuanced reality (Table~\ref{tab:ablation}).
 
 \begin{table}[htb]
-\caption{\textit{Teaching demonstration:} Ablation study showing individual and combined physics constraint contributions. Students should notice the counterintuitive result: the gradient constraint---seemingly the most ``physical''---actually degrades performance. This teaches that physics constraints must themselves be validated.}
+\caption{\textit{Teaching demonstration:} Ablation study showing individual and combined physics constraint contributions. Students should notice the counterintuitive result: the gradient constraint---seemingly the most ``physical'', actually degrades performance. This teaches that physics constraints must themselves be validated.}
 \centering
 \begin{tabular}{l c c c c c}
 \toprule
@@ -383,8 +285,7 @@ Positivity only & 0 & 0.01 & 0 & $8.64 \times 10^{-4}$ & $-51.4\%$ \\
 Gradient only & 0 & 0 & 0.05 & $1.10 \times 10^{-3}$ & $-92.5\%$ \\
 Smooth + Pos & 0.1 & 0.01 & 0 & $5.96 \times 10^{-4}$ & $-4.5\%$ \\
 Smooth + Grad & 0.1 & 0 & 0.05 & $9.79 \times 10^{-4}$ & $-71.6\%$ \\
-Full PINN (Initial) & 0.1 & 0.01 & 0.05 & $5.31 \times 10^{-4}$ & +6.9\% \\
-\textbf{Optimized PINN} & 0.1 & 0.05 & 0 & $\mathbf{5.44 \times 10^{-4}}$ & \textbf{+52.5\%} \\
+Full PINN (All constraints) & 0.1 & 0.01 & 0.05 & $5.31 \times 10^{-4}$ & +6.9\% \\
 \bottomrule
 \end{tabular}
 \label{tab:ablation}
@@ -393,13 +294,11 @@ Full PINN (Initial) & 0.1 & 0.01 & 0.05 & $5.31 \times 10^{-4}$ & +6.9\% \\
 \textit{Key lessons for students from the ablation study:}
 
 \begin{enumerate}
-    \item \textbf{Smoothness has strong physical justification:} The smoothness constraint alone achieves excellent performance because dose distributions must vary continuously in space. This constraint has clear physical motivation and directly regularizes the network toward realistic predictions.
+    \item \textbf{Smoothness has strong physical justification:} The smoothness constraint alone achieves the best performance (+13.3\% optimization) because dose distributions must vary continuously in space. This constraint has clear physical motivation and directly regularizes the network toward realistic predictions.
     
-    \item \textbf{``Physical'' constraints can conflict with data:} The gradient correlation constraint---based on the venerable Bethe-Bloch formula---actually degrades performance when applied alone or in combination. This teaches students a crucial lesson: textbook formulas have domains of validity, and when simulation data includes physics beyond those formulas (nuclear interactions, straggling), forcing the network to match the simpler theory is counterproductive.
+    \item \textbf{``Physical'' constraints can conflict with data:} The gradient correlation constraint---based on the Bethe-Bloch formula, substantially degrades performance (-92.5\%). This teaches students a crucial lesson: idealized formulas have domains of validity, and forcing the network to match them can conflict with the realistic physics (like nuclear interactions) captured in the data.
     
-    \item \textbf{Constraints can compete:} Combining all constraints performs worse than smoothness alone, indicating that constraints can work against each other. Students learn that physics-informed ML requires thoughtful constraint selection, not just adding every constraint imaginable.
-    
-    \item \textbf{Validation is essential:} The ablation study itself teaches the validation mindset: even plausible-sounding constraints must be tested empirically.
+    \item \textbf{Constraints can compete:} Adding positivity to smoothness actually reduced performance (-4.5\%), contrasting with smoothness alone. This highlights that physics-informed ML requires thoughtful constraint selection through validation, not just adding every plausible constraint.
 \end{enumerate}
 
 These results motivate our constraint weight selection and illustrate why physics-informed machine learning requires understanding both the physics and its limitations.
@@ -435,42 +334,7 @@ Figure~\ref{fig:comparison} compares model predictions against simulation truth 
 \label{fig:uncertainty}
 \end{figure}
 
-\subsection{Framework Generalization: Cross-Material Validation}
 
-To demonstrate that the validation framework transfers to different materials, we repeated the complete workflow for water (density: 1.00~g/cm$^3$, composition: H$_2$O). This illustrates an important educational point: the framework requires no architectural changes---only retraining with material-specific data---making it adaptable to diverse validation contexts.
-
-We simulated water phantoms at five key energies (70, 150, 250, 500, 1000~MeV) spanning the clinical range, applying the same PINN architecture trained on water-specific data.
-
-\begin{figure}[htb]
-\centering
-\includegraphics[width=0.9\textwidth]{water_comparison}
-\caption{\textit{What students should observe:} Cross-material validation comparing dose-depth profiles in EJ-200 (blue) and water (red) at 150~MeV. Both materials show characteristic Bragg peaks, with water's peak occurring at greater depth due to lower density. The same PINN architecture, retrained on water data, reproduces the simulation within 2\%---demonstrating framework transferability across materials.}
-\label{fig:water}
-\end{figure}
-
-\begin{table}[htb]
-\caption{Cross-material validation: Framework performance across materials and energies}
-\centering
-\begin{tabular}{l c c c c c}
-\toprule
-\textbf{Material} & \textbf{Energy} & \textbf{TOPAS} & \textbf{NIST} & \textbf{PINN} & \textbf{PINN Error} \\
- & \textbf{(MeV)} & \textbf{(MeV/mm)} & \textbf{(MeV/mm)} & \textbf{(MeV/mm)} & \textbf{(\%)} \\
-\midrule
-\multirow{3}{*}{EJ-200 (PVT)} & 70 & 1.049 & 0.958 & 1.041 & 0.8 \\
- & 150 & 0.590 & 0.590 & 0.583 & 1.2 \\
- & 250 & 0.456 & 0.445 & 0.452 & 0.9 \\
-\midrule
-\multirow{3}{*}{Water (H$_2$O)} & 70 & 0.923 & 0.905 & 0.918 & 0.5 \\
- & 150 & 0.511 & 0.505 & 0.508 & 0.6 \\
- & 250 & 0.395 & 0.388 & 0.392 & 0.8 \\
-\bottomrule
-\end{tabular}
-\label{tab:materials}
-\end{table}
-
-The PINN maintains <2\% error across both materials and all energies, demonstrating the framework's transferability. Notably, the framework requires no architectural changes---only retraining with material-specific data---making it easily adaptable to new validation contexts.
-
-\textbf{Transfer learning efficiency:} Pre-training on EJ-200 and fine-tuning on water with only 30\% of the water data achieved 89\% of the accuracy of training from scratch, suggesting that physics constraints enable efficient cross-material adaptation.
 
 \subsection{Computational Considerations}
 
@@ -538,7 +402,7 @@ This framework differs by:
     
     \item \textbf{Emphasizing disagreement as learning:} Rather than treating discrepancies as problems to be minimized, the framework positions them as opportunities for physics insight.
     
-    \item \textbf{Teaching constraint validation:} The ablation study demonstrates that even physics-motivated constraints require empirical testing---a lesson rarely explicit in traditional curricula.
+    \item \textbf{Teaching constraint validation:} The ablation study demonstrates that even physics-motivated constraints require empirical testing; a lesson rarely explicit in traditional curricula.
     
     \item \textbf{Providing complete, runnable examples:} Rather than describing methods abstractly, students work with concrete implementations they can modify and extend.
 \end{itemize}
@@ -590,7 +454,7 @@ All materials are available at: \texttt{https://github.com/Yash-Programmer/pinn-
 
 The substantial improvement from physics-informed constraints illustrates a fundamental principle that students often miss: machine learning works best when combined with domain knowledge, not when used as a pure black-box interpolator.
 
-An unconstrained neural network can fit training data with any smooth function---including predictions that discontinuously jump between adjacent energies, or that predict negative energy deposition. Such predictions are mathematically valid but physically nonsensical. By explicitly penalizing violations of known physics (smoothness, positivity), the physics-informed network restricts its solution space to physically plausible functions.
+An unconstrained neural network can fit training data with any smooth functiondata, including predictions that discontinuously jump between adjacent energies, or that predict negative energy deposition. Such predictions are mathematically valid but physically nonsensical. By explicitly penalizing violations of known physics (smoothness, positivity), the physics-informed network restricts its solution space to physically plausible functions.
 
 This provides a concrete teaching example of the bias-variance tradeoff: adding constraints (bias) reduces overfitting (variance) when constraints align with reality. Students learn that ``more data'' is not the only path to better predictions---``more physics'' often helps more.
 
@@ -604,7 +468,7 @@ This principle---treating disagreement as information rather than error---is tra
 
 \subsection{Why Blind Trust in AI is Dangerous}
 
-The ablation study reveals a sobering lesson: the gradient correlation constraint---seemingly the most ``physical'' of our constraints, based on the venerable Bethe-Bloch formula---actually degrades performance when applied naively.
+The ablation study reveals a sobering lesson: the gradient correlation constraint, seemingly the most ``physical'' of our constraints, based on the venerable Bethe-Bloch formula---actually degrades performance when applied naively.
 
 This occurs because the Bethe-Bloch formula describes an idealized approximation that ignores nuclear interactions, straggling, and other effects present in full Monte Carlo simulation. Forcing the neural network to match this approximation conflicts with the more complete physics in the training data.
 
@@ -653,14 +517,14 @@ Our contribution connects abstract PINN methodology to concrete particle physics
 
 \subsection{The Teaching Problem Revisited}
 
-Physics educators face a growing challenge: as Monte Carlo codes and machine learning models become more powerful and accessible, students risk treating them as infallible black boxes. The critical skill of multi-method validation---comparing results from fundamentally different calculation approaches---remains under-taught in standard curricula. This manuscript addresses that pedagogical gap.
+Physics educators face a growing challenge: as Monte Carlo codes and machine learning models become more powerful and accessible, students risk treating them as infallible black boxes. The critical skill of multi-method validation, defined as comparing results from fundamentally different calculation approaches, remains under-taught in standard curricula. This manuscript addresses that pedagogical gap.
 
 \subsection{What Students Learn}
 
 Through this framework, students develop competencies essential for modern computational physics:
 
 \begin{enumerate}
-    \item \textbf{The validation mindset:} Computational results gain credibility when multiple independent methods agree---and disagreements reveal physics rather than error.
+    \item \textbf{The validation mindset:} Computational results gain credibility when multiple independent methods agree, and where disagreements reveal physics rather than error.
     
     \item \textbf{Critical evaluation of AI:} Machine learning predictions improve substantially when informed by physics constraints, but constraint selection itself requires validation. ``Adding physics'' is not automatic.
     
@@ -685,7 +549,7 @@ This framework teaches more than radiation transport physics---it teaches the ha
 %% ACKNOWLEDGMENTS AND DATA
 %% ============================================================================
 
-\ack{The author thanks the KAVACH research team for discussions on experimental validation methodology and physics constraints, and the OpenTOPAS development community for simulation support and extensive documentation.}
+\ack{The authors thank the OpenTOPAS development community for simulation support and extensive documentation.}
 
 \data{All simulation data, trained models, and analysis code are available at \texttt{https://github.com/Yash-Programmer/pinn-radiation-validation} under the MIT License. The repository includes OpenTOPAS configuration files, raw simulation outputs, processed training data (CSV format), pre-trained TensorFlow/Keras models, and Jupyter notebooks for classroom activities.}
 
