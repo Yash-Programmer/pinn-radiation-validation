@@ -1,0 +1,154 @@
+# =============================================================================
+# OpenTOPAS Simulation + PINN Project .gitignore
+# =============================================================================
+
+# =============================================================================
+# TOPAS/Geant4 Simulation Output (Large binary files)
+# =============================================================================
+# Phase space files (binary, very large)
+*.phsp
+*.header
+
+# ROOT files
+*.root
+
+# Simulation log files
+output/log_*.txt
+output/test_run.log
+topas_test.log
+
+# =============================================================================
+# Keep essential output (CSV data used for training)
+# =============================================================================
+# Keep CSV files in output/
+!output/*.csv
+!output/EnergyDepZ_*.csv
+
+# =============================================================================
+# Python Virtual Environments
+# =============================================================================
+pinn_project/venv/
+pinn_project/ENV/
+pinn_project/env/
+pinn_project/.venv/
+venv/
+ENV/
+env/
+.venv/
+
+# =============================================================================
+# Python Bytecode and Cache
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# =============================================================================
+# IDE and Editor Files
+# =============================================================================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.spyderproject
+.spyproject
+*.sublime-project
+*.sublime-workspace
+
+# =============================================================================
+# Jupyter Notebook Checkpoints
+# =============================================================================
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# =============================================================================
+# OS Generated Files
+# =============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# =============================================================================
+# LaTeX Auxiliary Files (keep PDF)
+# =============================================================================
+pinn_project/paper/*.aux
+pinn_project/paper/*.bbl
+pinn_project/paper/*.blg
+pinn_project/paper/*.log
+pinn_project/paper/*.out
+pinn_project/paper/*.toc
+pinn_project/paper/*.lof
+pinn_project/paper/*.lot
+pinn_project/paper/*.fls
+pinn_project/paper/*.fdb_latexmk
+pinn_project/paper/*.synctex.gz
+pinn_project/paper/*.synctex(busy)
+
+# Keep the compiled PDF
+!pinn_project/paper/main.pdf
+
+# =============================================================================
+# Old/Deprecated Directories (exclude from repo)
+# =============================================================================
+pinn_data/pinn-older/
+pinn_project/pinn-older/
+pinn_project/base edu/
+pinn_project/validation-framweork base/
+
+# =============================================================================
+# Model Checkpoints During Training (keep final models)
+# =============================================================================
+pinn_project/checkpoints/
+*.ckpt
+
+# =============================================================================
+# Logs and Temporary Files
+# =============================================================================
+*.log
+logs/
+*.tmp
+*.temp
+.cache/
+
+# =============================================================================
+# Large Simulation Run Directories (optional - uncomment if too large)
+# =============================================================================
+# runs/
+
+# =============================================================================
+# Keep Important Files
+# =============================================================================
+# Pre-trained models
+!pinn_project/models/*.keras
+!pinn_project/models/*.npy
+
+# Training data
+!pinn_data/*.csv
+!pinn_data/*.pkl
+!pinn_data/*.json
+
+# Results
+!pinn_project/results/*.csv

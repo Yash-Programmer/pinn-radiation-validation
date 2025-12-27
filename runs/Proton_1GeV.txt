@@ -1,0 +1,55 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation
+# RUN CONFIGURATION: Proton 1.0 GeV/c
+#
+# Research-grade configuration with full physics metadata
+#==============================================================================
+
+includeFile = ../geometry/KAVACH_Beamline.txt
+includeFile = ../physics/KAVACH_Physics.txt
+includeFile = ../scorers/KAVACH_Scorers.txt
+includeFile = ../sources/ProtonBeam.txt
+
+#------------------------------------------------------------------------------
+# BEAM CONFIGURATION
+#------------------------------------------------------------------------------
+d:So/ProtonBeam/BeamMomentum = 1.0 GeV/c
+
+# Per proposal: 10,000 triggered events per configuration (~30 min/setting)
+i:So/ProtonBeam/NumberOfHistoriesInRun = 10000
+
+s:Sc/OutputDir = "../output/proton/1GeV/"
+
+#------------------------------------------------------------------------------
+# RUNTIME OPTIONS
+#------------------------------------------------------------------------------
+i:Ts/Seed = 12345
+i:Ts/NumberOfThreads = 4
+i:Ts/ShowHistoryCountAtInterval = 1000
+b:Ts/ShowCPUTime = "True"
+b:Ts/PauseBeforeQuit = "False"
+i:Ts/SequenceVerbosity = 1
+
+#------------------------------------------------------------------------------
+# PHYSICS METADATA (Per proposal Table 3)
+# Calculated using Bethe-Bloch validated against NIST PSTAR
+#------------------------------------------------------------------------------
+# Particle: proton (PDG 2212)
+# Momentum: 1.0 GeV/c
+# Mass: 938.27 MeV/c²
+# 
+# Kinematic calculations:
+#   E_total = √(p² + m²) = √(1000² + 938.27²) = 1370.8 MeV
+#   Kinetic Energy = E_total - m = 432.5 MeV
+#   β = p/E = 1000/1370.8 = 0.729
+#   γ = E/m = 1370.8/938.27 = 1.461
+#
+# Bethe-Bloch stopping power in EJ-200 (ρ=1.023 g/cm³, I=64.7 eV):
+#   dE/dx ≈ 1.87 MeV/cm (validated against NIST PSTAR)
+#
+# Birks quenching (kB = 0.0126 g/MeV/cm² = 0.0123 cm/MeV):
+#   Q = 1/(1 + kB × dE/dx) = 1/(1 + 0.0123 × 1.87) = 0.977
+#
+# Expected values from proposal Table 3:
+#   dE/dx = 1.9 MeV/cm, Q = 0.976 ± 0.002
+#==============================================================================

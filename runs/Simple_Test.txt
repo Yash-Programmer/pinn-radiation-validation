@@ -1,0 +1,79 @@
+# KAVACH BL4S OpenTOPAS Simulation - FIXED VERSION
+# Based on Dose.txt example with all issues fixed
+
+#==============================================================================
+# WORLD (override built-in defaults)
+#==============================================================================
+s:Ge/World/Material  = "Vacuum"
+d:Ge/World/HLX       = 50.0 cm
+d:Ge/World/HLY       = 50.0 cm
+d:Ge/World/HLZ       = 200.0 cm
+b:Ge/World/Invisible = "True"
+
+#==============================================================================
+# EJ-200 SCINTILLATOR MATERIAL
+#==============================================================================
+sv:Ma/EJ200/Components = 2 "Hydrogen" "Carbon"
+uv:Ma/EJ200/Fractions = 2 0.0847 0.9153
+d:Ma/EJ200/Density = 1.023 g/cm3
+d:Ma/EJ200/MeanExcitationEnergy = 64.7 eV
+s:Ma/EJ200/DefaultColor = "blue"
+
+#==============================================================================
+# TARGET SCINTILLATOR (50x50x10 mm)
+#==============================================================================
+s:Ge/TargetScint/Type     = "TsBox"
+s:Ge/TargetScint/Parent   = "World"
+s:Ge/TargetScint/Material = "EJ200"
+d:Ge/TargetScint/HLX      = 25.0 mm
+d:Ge/TargetScint/HLY      = 25.0 mm
+d:Ge/TargetScint/HLZ      = 5.0 mm
+d:Ge/TargetScint/TransZ   = 0.0 cm
+s:Ge/TargetScint/Color    = "blue"
+
+#==============================================================================
+# SCORERS
+#==============================================================================
+s:Sc/EnergyDep/Quantity                  = "EnergyDeposit"
+s:Sc/EnergyDep/Component                 = "TargetScint"
+b:Sc/EnergyDep/OutputToConsole           = "TRUE"
+s:Sc/EnergyDep/IfOutputFileAlreadyExists = "Overwrite"
+
+s:Sc/Dose/Quantity                  = "DoseToMedium"
+s:Sc/Dose/Component                 = "TargetScint"
+b:Sc/Dose/OutputToConsole           = "TRUE"
+s:Sc/Dose/IfOutputFileAlreadyExists = "Overwrite"
+
+#==============================================================================
+# PHYSICS
+#==============================================================================
+sv:Ph/Default/Modules = 1 "g4em-standard_opt0"
+
+#==============================================================================
+# PROTON BEAM SOURCE (BeamPosition is built-in)
+#==============================================================================
+s:So/Example/Type                     = "Beam"
+s:So/Example/Component                = "BeamPosition"
+s:So/Example/BeamParticle             = "proton"
+d:So/Example/BeamEnergy               = 432.5 MeV
+u:So/Example/BeamEnergySpread         = 0.01
+s:So/Example/BeamPositionDistribution = "Gaussian"
+s:So/Example/BeamPositionCutoffShape  = "Ellipse"
+d:So/Example/BeamPositionCutoffX      = 15.0 mm
+d:So/Example/BeamPositionCutoffY      = 15.0 mm
+d:So/Example/BeamPositionSpreadX      = 5.0 mm
+d:So/Example/BeamPositionSpreadY      = 5.0 mm
+s:So/Example/BeamAngularDistribution  = "Gaussian"
+d:So/Example/BeamAngularCutoffX       = 90. deg
+d:So/Example/BeamAngularCutoffY       = 90. deg
+d:So/Example/BeamAngularSpreadX       = 0.001 rad
+d:So/Example/BeamAngularSpreadY       = 0.001 rad
+i:So/Example/NumberOfHistoriesInRun   = 100
+
+#==============================================================================
+# RUNTIME
+#==============================================================================
+i:Ts/ShowHistoryCountAtInterval = 10
+i:Ts/NumberOfThreads = 1
+i:Ts/Seed = 12345
+b:Ts/PauseBeforeQuit = "False"

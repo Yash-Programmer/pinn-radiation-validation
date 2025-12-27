@@ -1,0 +1,22 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation
+# RUN CONFIGURATION: Proton 5.0 GeV/c
+#==============================================================================
+
+includeFile = ../geometry/KAVACH_Beamline.txt
+includeFile = ../physics/KAVACH_Physics.txt
+includeFile = ../scorers/KAVACH_Scorers.txt
+includeFile = ../sources/ProtonBeam.txt
+
+d:So/ProtonBeam/BeamMomentum = 5.0 GeV/c
+i:So/ProtonBeam/NumberOfHistoriesInRun = 10000
+s:Sc/OutputDir = "../output/proton/5GeV/"
+
+i:Ts/Seed = 52345
+i:Ts/NumberOfThreads = 4
+i:Ts/ShowHistoryCountAtInterval = 1000
+b:Ts/ShowCPUTime = "True"
+b:Ts/PauseBeforeQuit = "False"
+i:Ts/SequenceVerbosity = 1
+
+# Metadata: proton 5.0 GeV/c, KE=4334 MeV, dE/dx~1.6 MeV/cm, Q~0.980

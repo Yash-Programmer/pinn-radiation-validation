@@ -1,0 +1,60 @@
+# KAVACH BL4S - Proton 200 MeV (Clinical Range)
+s:Ge/World/Material  = "Vacuum"
+d:Ge/World/HLX       = 50.0 cm
+d:Ge/World/HLY       = 50.0 cm
+d:Ge/World/HLZ       = 200.0 cm
+b:Ge/World/Invisible = "True"
+
+sv:Ma/EJ200/Components = 2 "Hydrogen" "Carbon"
+uv:Ma/EJ200/Fractions = 2 0.0847 0.9153
+d:Ma/EJ200/Density = 1.023 g/cm3
+d:Ma/EJ200/MeanExcitationEnergy = 64.7 eV
+s:Ma/EJ200/DefaultColor = "blue"
+
+s:Ge/TargetScint/Type     = "TsBox"
+s:Ge/TargetScint/Parent   = "World"
+s:Ge/TargetScint/Material = "EJ200"
+d:Ge/TargetScint/HLX      = 25.0 mm
+d:Ge/TargetScint/HLY      = 25.0 mm
+d:Ge/TargetScint/HLZ      = 5.0 mm
+d:Ge/TargetScint/TransZ   = 0.0 cm
+s:Ge/TargetScint/Color    = "blue"
+
+s:Sc/EnergyDep/Quantity                  = "EnergyDeposit"
+s:Sc/EnergyDep/Component                 = "TargetScint"
+s:Sc/EnergyDep/OutputFile                = "EnergyDep_200MeV"
+s:Sc/EnergyDep/OutputType                = "csv"
+b:Sc/EnergyDep/OutputToConsole           = "TRUE"
+s:Sc/EnergyDep/IfOutputFileAlreadyExists = "Overwrite"
+
+s:Sc/Dose/Quantity                  = "DoseToMedium"
+s:Sc/Dose/Component                 = "TargetScint"
+s:Sc/Dose/OutputFile                = "Dose_200MeV"
+s:Sc/Dose/OutputType                = "csv"
+b:Sc/Dose/OutputToConsole           = "TRUE"
+s:Sc/Dose/IfOutputFileAlreadyExists = "Overwrite"
+
+sv:Ph/Default/Modules = 1 "g4em-standard_opt0"
+
+s:So/Proton/Type                     = "Beam"
+s:So/Proton/Component                = "BeamPosition"
+s:So/Proton/BeamParticle             = "proton"
+d:So/Proton/BeamEnergy               = 200 MeV
+u:So/Proton/BeamEnergySpread         = 0.01
+s:So/Proton/BeamPositionDistribution = "Gaussian"
+s:So/Proton/BeamPositionCutoffShape  = "Ellipse"
+d:So/Proton/BeamPositionCutoffX      = 15.0 mm
+d:So/Proton/BeamPositionCutoffY      = 15.0 mm
+d:So/Proton/BeamPositionSpreadX      = 5.0 mm
+d:So/Proton/BeamPositionSpreadY      = 5.0 mm
+s:So/Proton/BeamAngularDistribution  = "Gaussian"
+d:So/Proton/BeamAngularCutoffX       = 90. deg
+d:So/Proton/BeamAngularCutoffY       = 90. deg
+d:So/Proton/BeamAngularSpreadX       = 0.001 rad
+d:So/Proton/BeamAngularSpreadY       = 0.001 rad
+i:So/Proton/NumberOfHistoriesInRun   = 10000
+
+i:Ts/ShowHistoryCountAtInterval = 1000
+i:Ts/NumberOfThreads = 4
+i:Ts/Seed = 200001
+b:Ts/PauseBeforeQuit = "False"

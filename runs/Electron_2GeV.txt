@@ -1,0 +1,26 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation
+# RUN CONFIGURATION: Electron 2.0 GeV/c (MIP Calibration)
+#==============================================================================
+
+includeFile = ../geometry/KAVACH_Beamline.txt
+includeFile = ../physics/KAVACH_Physics.txt
+includeFile = ../scorers/KAVACH_Scorers.txt
+includeFile = ../sources/ElectronBeam.txt
+
+d:So/ElectronBeam/BeamMomentum = 2.0 GeV/c
+i:So/ElectronBeam/NumberOfHistoriesInRun = 10000
+s:Sc/OutputDir = "../output/electron/2GeV/"
+
+i:Ts/Seed = 212345
+i:Ts/NumberOfThreads = 4
+i:Ts/ShowHistoryCountAtInterval = 1000
+b:Ts/ShowCPUTime = "True"
+b:Ts/PauseBeforeQuit = "False"
+i:Ts/SequenceVerbosity = 1
+
+# Metadata: e- 2.0 GeV/c (essentially MIP at this energy)
+# KE = 2000 MeV (ultra-relativistic)
+# dE/dx ~ 1.7 MeV/cm (minimum ionizing)
+# Expected Q ~ 0.979 (minimal quenching - MIP reference)
+# This run provides the calibration baseline for quenching measurements

@@ -1,0 +1,37 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation - QUICK SYNTAX TEST
+# Run this FIRST to verify everything works before production runs
+# Only 100 events - should complete in ~30 seconds
+#==============================================================================
+
+includeFile = ../materials/EJ200_Materials.txt
+includeFile = ../geometry/KAVACH_Beamline.txt
+includeFile = ../physics/KAVACH_Physics.txt
+includeFile = ../scorers/KAVACH_Scorers.txt
+includeFile = ../sources/ProtonBeam.txt
+
+#------------------------------------------------------------------------------
+# TEST CONFIGURATION - MINIMAL EVENTS
+#------------------------------------------------------------------------------
+d:So/ProtonBeam/BeamMomentum = 1.0 GeV/c
+i:So/ProtonBeam/NumberOfHistoriesInRun = 100
+
+s:Sc/OutputDir = "../output/test/"
+
+#------------------------------------------------------------------------------
+# RUNTIME OPTIONS
+#------------------------------------------------------------------------------
+i:Ts/Seed = 99999
+i:Ts/NumberOfThreads = 1
+i:Ts/ShowHistoryCountAtInterval = 10
+b:Ts/ShowCPUTime = "True"
+b:Ts/PauseBeforeQuit = "False"
+i:Ts/SequenceVerbosity = 1
+
+#------------------------------------------------------------------------------
+# VALIDATION CHECKS AFTER THIS RUN:
+# 1. Check Scint_EnergyDeposit.csv exists and has data
+# 2. Check OpticalPhotonCount.csv > 0
+# 3. Check S1_PhaseSpace.phsp exists
+# 4. Verify no geometry errors in console output
+#==============================================================================

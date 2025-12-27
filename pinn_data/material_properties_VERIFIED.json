@@ -1,0 +1,56 @@
+{
+  "material": "EJ-200",
+  "manufacturer": "Eljen Technology",
+  "datasheet_url": "https://eljentechnology.com/products/plastic-scintillators/ej-200",
+  "verification_date": "2025-12-27",
+  "properties": {
+    "density_g_per_cm3": 1.023,
+    "density_source": "Eljen Technology Datasheet",
+    "composition": {
+      "base": "polyvinyltoluene (PVT)",
+      "hydrogen_atoms_per_cm3": 5.17e+22,
+      "carbon_atoms_per_cm3": 4.69e+22,
+      "hydrogen_weight_fraction": 0.0847,
+      "carbon_weight_fraction": 0.9153,
+      "H_to_C_ratio": 1.1023454157782515
+    },
+    "mean_excitation_energy_eV": 64.7,
+    "mean_excitation_source": "NIST (polyvinyltoluene)"
+  },
+  "optical_properties": {
+    "light_yield_photons_per_MeV": 10000,
+    "light_output_percent_anthracene": 64,
+    "peak_emission_wavelength_nm": 425,
+    "decay_time_ns": 2.1,
+    "refractive_index": 1.58,
+    "attenuation_length_cm": 380
+  },
+  "geometry": {
+    "thickness_mm": 10.0,
+    "width_mm": 50.0,
+    "height_mm": 50.0
+  },
+  "nist_reference": {
+    "source": "NIST PSTAR Database",
+    "url": "https://physics.nist.gov/PhysRefData/Star/Text/PSTAR.html",
+    "material": "Polystyrene (closest match)",
+    "energies_MeV": [
+      70,
+      100,
+      200,
+      500,
+      1000,
+      2000,
+      5000
+    ],
+    "stopping_power_MeV_cm2_per_g": [
+      9.369,
+      7.14,
+      4.397,
+      2.683,
+      2.153,
+      1.96,
+      1.97
+    ]
+  }
+}

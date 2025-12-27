@@ -1,0 +1,33 @@
+{
+  "version": "v2",
+  "date": "2025-12-27",
+  "feature_names": [
+    "energy_MeV",
+    "depth_mm",
+    "beta",
+    "gamma",
+    "momentum_MeV_c"
+  ],
+  "feature_means": [
+    1451.4285714285713,
+    5.0,
+    0.7439432128284251,
+    2.5469165660601716,
+    2059.102124910585
+  ],
+  "feature_stds": [
+    1773.804857775902,
+    2.886607004772212,
+    0.2112879700391608,
+    1.8905016571024456,
+    1933.0795951774908
+  ],
+  "target_name": "sim_dEdx_MeV_per_mm",
+  "target_min": [
+    0.1906818542480469
+  ],
+  "target_max": [
+    1.152836791992188
+  ],
+  "notes": "v2 uses corrected dose and NIST dE/dx reference"
+}

@@ -1,0 +1,26 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation
+# RUN CONFIGURATION: Electron 4.0 GeV/c (MIP Calibration)
+#==============================================================================
+
+includeFile = ../geometry/KAVACH_Beamline.txt
+includeFile = ../physics/KAVACH_Physics.txt
+includeFile = ../scorers/KAVACH_Scorers.txt
+includeFile = ../sources/ElectronBeam.txt
+
+d:So/ElectronBeam/BeamMomentum = 4.0 GeV/c
+i:So/ElectronBeam/NumberOfHistoriesInRun = 10000
+s:Sc/OutputDir = "../output/electron/4GeV/"
+
+i:Ts/Seed = 412345
+i:Ts/NumberOfThreads = 4
+i:Ts/ShowHistoryCountAtInterval = 1000
+b:Ts/ShowCPUTime = "True"
+b:Ts/PauseBeforeQuit = "False"
+i:Ts/SequenceVerbosity = 1
+
+# Metadata: e- 4.0 GeV/c (MIP at this energy)
+# KE = 4000 MeV (ultra-relativistic)
+# dE/dx ~ 1.7 MeV/cm (minimum ionizing with slight relativistic rise)
+# Expected Q ~ 0.979 (minimal quenching - MIP reference)
+# Secondary calibration point to verify energy-independence in MIP region

@@ -1,0 +1,339 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation - Detector Geometry
+# Full T09 beamline replica with all detector components
+# Note: Materials must be included separately in run files
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# WORLD VOLUME
+# Large enough to contain full beamline (beam travels in -Z direction)
+#------------------------------------------------------------------------------
+d:Ge/World/HLX      = 1.5 m
+d:Ge/World/HLY      = 1.5 m
+d:Ge/World/HLZ      = 2.0 m
+s:Ge/World/Material = "Air"
+b:Ge/World/Invisible = "True"
+
+
+#==============================================================================
+# STAGE 1: TRIGGER AND IDENTIFICATION
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# S1 - Trigger Scintillator (100x100x5 mm^3)
+# First detector in beam path, provides trigger signal
+#------------------------------------------------------------------------------
+s:Ge/S1_Trigger/Parent   = "World"
+s:Ge/S1_Trigger/Type     = "TsBox"
+s:Ge/S1_Trigger/Material = "TriggerScint"
+d:Ge/S1_Trigger/HLX      = 50 mm
+d:Ge/S1_Trigger/HLY      = 50 mm
+d:Ge/S1_Trigger/HLZ      = 2.5 mm
+d:Ge/S1_Trigger/TransX   = 0 cm
+d:Ge/S1_Trigger/TransY   = 0 cm
+d:Ge/S1_Trigger/TransZ   = 160 cm
+d:Ge/S1_Trigger/RotX     = 0 deg
+d:Ge/S1_Trigger/RotY     = 0 deg
+d:Ge/S1_Trigger/RotZ     = 0 deg
+s:Ge/S1_Trigger/Color    = "yellow"
+
+#------------------------------------------------------------------------------
+# CO2 Cherenkov Counter
+# Threshold Cherenkov for pion/proton separation
+# Length: 100 cm, Radius: 10 cm (cylindrical)
+#------------------------------------------------------------------------------
+s:Ge/Cherenkov/Parent   = "World"
+s:Ge/Cherenkov/Type     = "TsCylinder"
+s:Ge/Cherenkov/Material = "CO2Gas"
+d:Ge/Cherenkov/RMin     = 0 cm
+d:Ge/Cherenkov/RMax     = 10 cm
+d:Ge/Cherenkov/HL       = 50 cm
+d:Ge/Cherenkov/SPhi     = 0 deg
+d:Ge/Cherenkov/DPhi     = 360 deg
+d:Ge/Cherenkov/TransX   = 0 cm
+d:Ge/Cherenkov/TransY   = 0 cm
+d:Ge/Cherenkov/TransZ   = 100 cm
+d:Ge/Cherenkov/RotX     = 0 deg
+d:Ge/Cherenkov/RotY     = 0 deg
+d:Ge/Cherenkov/RotZ     = 0 deg
+s:Ge/Cherenkov/Color    = "white"
+
+# Cherenkov housing (aluminum cylinder)
+s:Ge/CherenkovHousing/Parent   = "World"
+s:Ge/CherenkovHousing/Type     = "TsCylinder"
+s:Ge/CherenkovHousing/Material = "DetectorAl"
+d:Ge/CherenkovHousing/RMin     = 10 cm
+d:Ge/CherenkovHousing/RMax     = 10.5 cm
+d:Ge/CherenkovHousing/HL       = 50 cm
+d:Ge/CherenkovHousing/SPhi     = 0 deg
+d:Ge/CherenkovHousing/DPhi     = 360 deg
+d:Ge/CherenkovHousing/TransX   = 0 cm
+d:Ge/CherenkovHousing/TransY   = 0 cm
+d:Ge/CherenkovHousing/TransZ   = 100 cm
+s:Ge/CherenkovHousing/Color    = "grey"
+
+#------------------------------------------------------------------------------
+# DWC1 - Delay Wire Chamber 1
+# Position measurement with ±200 μm resolution
+#------------------------------------------------------------------------------
+s:Ge/DWC1/Parent   = "World"
+s:Ge/DWC1/Type     = "TsBox"
+s:Ge/DWC1/Material = "DWCGas"
+d:Ge/DWC1/HLX      = 50 mm
+d:Ge/DWC1/HLY      = 50 mm
+d:Ge/DWC1/HLZ      = 5 mm
+d:Ge/DWC1/TransX   = 0 cm
+d:Ge/DWC1/TransY   = 0 cm
+d:Ge/DWC1/TransZ   = 40 cm
+d:Ge/DWC1/RotX     = 0 deg
+d:Ge/DWC1/RotY     = 0 deg
+d:Ge/DWC1/RotZ     = 0 deg
+s:Ge/DWC1/Color    = "lightblue"
+
+# DWC1 housing
+s:Ge/DWC1_Housing/Parent   = "World"
+s:Ge/DWC1_Housing/Type     = "TsBox"
+s:Ge/DWC1_Housing/Material = "DetectorAl"
+d:Ge/DWC1_Housing/HLX      = 55 mm
+d:Ge/DWC1_Housing/HLY      = 55 mm
+d:Ge/DWC1_Housing/HLZ      = 1 mm
+d:Ge/DWC1_Housing/TransX   = 0 cm
+d:Ge/DWC1_Housing/TransY   = 0 cm
+d:Ge/DWC1_Housing/TransZ   = 45.6 cm
+s:Ge/DWC1_Housing/Color    = "grey"
+
+#==============================================================================
+# STAGE 2: TARGET SCINTILLATOR ASSEMBLY
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# Target EJ-200 Scintillator (50x50x10 mm^3)
+# Primary measurement target for quenching study
+#------------------------------------------------------------------------------
+s:Ge/TargetScint/Parent   = "World"
+s:Ge/TargetScint/Type     = "TsBox"
+s:Ge/TargetScint/Material = "EJ200"
+d:Ge/TargetScint/HLX      = 25 mm
+d:Ge/TargetScint/HLY      = 25 mm
+d:Ge/TargetScint/HLZ      = 5 mm
+d:Ge/TargetScint/TransX   = 0 cm
+d:Ge/TargetScint/TransY   = 0 cm
+d:Ge/TargetScint/TransZ   = 10 cm
+d:Ge/TargetScint/RotX     = 0 deg
+d:Ge/TargetScint/RotY     = 0 deg
+d:Ge/TargetScint/RotZ     = 0 deg
+s:Ge/TargetScint/Color    = "cyan"
+s:Ge/TargetScint/AssignToRegionNamed = "TargetScint"
+
+#------------------------------------------------------------------------------
+# Optical Grease Layer (between scintillator and PMT)
+#------------------------------------------------------------------------------
+s:Ge/OpticalCoupling/Parent   = "World"
+s:Ge/OpticalCoupling/Type     = "TsCylinder"
+s:Ge/OpticalCoupling/Material = "OpticalGrease"
+d:Ge/OpticalCoupling/RMin     = 0 cm
+d:Ge/OpticalCoupling/RMax     = 25 mm
+d:Ge/OpticalCoupling/HL       = 0.5 mm
+d:Ge/OpticalCoupling/SPhi     = 0 deg
+d:Ge/OpticalCoupling/DPhi     = 360 deg
+d:Ge/OpticalCoupling/TransX   = 0 cm
+d:Ge/OpticalCoupling/TransY   = 0 cm
+d:Ge/OpticalCoupling/TransZ   = 4.45 cm
+s:Ge/OpticalCoupling/Color    = "transparent"
+
+#------------------------------------------------------------------------------
+# PMT Window (Borosilicate glass)
+# Hamamatsu H10721-210 style
+#------------------------------------------------------------------------------
+s:Ge/PMTWindow/Parent   = "World"
+s:Ge/PMTWindow/Type     = "TsCylinder"
+s:Ge/PMTWindow/Material = "Borosilicate"
+d:Ge/PMTWindow/RMin     = 0 cm
+d:Ge/PMTWindow/RMax     = 25 mm
+d:Ge/PMTWindow/HL       = 1 mm
+d:Ge/PMTWindow/SPhi     = 0 deg
+d:Ge/PMTWindow/DPhi     = 360 deg
+d:Ge/PMTWindow/TransX   = 0 cm
+d:Ge/PMTWindow/TransY   = 0 cm
+d:Ge/PMTWindow/TransZ   = 3.35 cm
+s:Ge/PMTWindow/Color    = "red"
+
+#------------------------------------------------------------------------------
+# Photocathode (Bialkali for optical photon detection)
+#------------------------------------------------------------------------------
+s:Ge/Photocathode/Parent   = "World"
+s:Ge/Photocathode/Type     = "TsCylinder"
+s:Ge/Photocathode/Material = "Bialkali"
+d:Ge/Photocathode/RMin     = 0 cm
+d:Ge/Photocathode/RMax     = 23 mm
+d:Ge/Photocathode/HL       = 0.1 mm
+d:Ge/Photocathode/SPhi     = 0 deg
+d:Ge/Photocathode/DPhi     = 360 deg
+d:Ge/Photocathode/TransX   = 0 cm
+d:Ge/Photocathode/TransY   = 0 cm
+d:Ge/Photocathode/TransZ   = 2.25 cm
+s:Ge/Photocathode/Color    = "blue"
+s:Ge/Photocathode/OpticalBehavior = "SurfaceDetector"
+
+#------------------------------------------------------------------------------
+# PMT Housing (aluminum, light-tight)
+#------------------------------------------------------------------------------
+s:Ge/PMTHousing/Parent   = "World"
+s:Ge/PMTHousing/Type     = "TsCylinder"
+s:Ge/PMTHousing/Material = "DetectorAl"
+d:Ge/PMTHousing/RMin     = 25 mm
+d:Ge/PMTHousing/RMax     = 28 mm
+d:Ge/PMTHousing/HL       = 20 mm
+d:Ge/PMTHousing/SPhi     = 0 deg
+d:Ge/PMTHousing/DPhi     = 360 deg
+d:Ge/PMTHousing/TransX   = 0 cm
+d:Ge/PMTHousing/TransY   = 0 cm
+d:Ge/PMTHousing/TransZ   = 2 cm
+s:Ge/PMTHousing/Color    = "grey"
+
+#==============================================================================
+# STAGE 3: REFERENCE AND VALIDATION
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# DWC2 - Delay Wire Chamber 2
+# Confirm particle trajectory after target
+#------------------------------------------------------------------------------
+s:Ge/DWC2/Parent   = "World"
+s:Ge/DWC2/Type     = "TsBox"
+s:Ge/DWC2/Material = "DWCGas"
+d:Ge/DWC2/HLX      = 50 mm
+d:Ge/DWC2/HLY      = 50 mm
+d:Ge/DWC2/HLZ      = 5 mm
+d:Ge/DWC2/TransX   = 0 cm
+d:Ge/DWC2/TransY   = 0 cm
+d:Ge/DWC2/TransZ   = -30 cm
+d:Ge/DWC2/RotX     = 0 deg
+d:Ge/DWC2/RotY     = 0 deg
+d:Ge/DWC2/RotZ     = 0 deg
+s:Ge/DWC2/Color    = "lightblue"
+
+# DWC2 housing
+s:Ge/DWC2_Housing/Parent   = "World"
+s:Ge/DWC2_Housing/Type     = "TsBox"
+s:Ge/DWC2_Housing/Material = "DetectorAl"
+d:Ge/DWC2_Housing/HLX      = 55 mm
+d:Ge/DWC2_Housing/HLY      = 55 mm
+d:Ge/DWC2_Housing/HLZ      = 1 mm
+d:Ge/DWC2_Housing/TransX   = 0 cm
+d:Ge/DWC2_Housing/TransY   = 0 cm
+d:Ge/DWC2_Housing/TransZ   = -35.6 cm
+s:Ge/DWC2_Housing/Color    = "grey"
+
+#------------------------------------------------------------------------------
+# Lead Glass Calorimeter (4x4 array of modules)
+# Each module: 100x100x400 mm^3
+# 16 modules total for energy measurement reference
+#------------------------------------------------------------------------------
+
+# We create a parent volume for the calorimeter array
+s:Ge/Calorimeter/Parent   = "World"
+s:Ge/Calorimeter/Type     = "TsBox"
+s:Ge/Calorimeter/Material = "Air"
+d:Ge/Calorimeter/HLX      = 21 cm
+d:Ge/Calorimeter/HLY      = 21 cm
+d:Ge/Calorimeter/HLZ      = 20.5 cm
+d:Ge/Calorimeter/TransX   = 0 cm
+d:Ge/Calorimeter/TransY   = 0 cm
+d:Ge/Calorimeter/TransZ   = -80 cm
+s:Ge/Calorimeter/Color    = "transparent"
+
+# Central 2x2 lead glass core (most relevant for beam)
+s:Ge/CaloCore/Parent   = "Calorimeter"
+s:Ge/CaloCore/Type     = "TsBox"
+s:Ge/CaloCore/Material = "LeadGlass"
+d:Ge/CaloCore/HLX      = 10 cm
+d:Ge/CaloCore/HLY      = 10 cm
+d:Ge/CaloCore/HLZ      = 20 cm
+d:Ge/CaloCore/TransX   = 0 cm
+d:Ge/CaloCore/TransY   = 0 cm
+d:Ge/CaloCore/TransZ   = 0 cm
+s:Ge/CaloCore/Color    = "gray"
+
+# Outer ring modules (simplified as single blocks for each side)
+# Top modules
+s:Ge/CaloTop/Parent   = "Calorimeter"
+s:Ge/CaloTop/Type     = "TsBox"
+s:Ge/CaloTop/Material = "LeadGlass"
+d:Ge/CaloTop/HLX      = 20 cm
+d:Ge/CaloTop/HLY      = 5 cm
+d:Ge/CaloTop/HLZ      = 20 cm
+d:Ge/CaloTop/TransX   = 0 cm
+d:Ge/CaloTop/TransY   = 15 cm
+d:Ge/CaloTop/TransZ   = 0 cm
+s:Ge/CaloTop/Color    = "gray"
+
+# Bottom modules
+s:Ge/CaloBottom/Parent   = "Calorimeter"
+s:Ge/CaloBottom/Type     = "TsBox"
+s:Ge/CaloBottom/Material = "LeadGlass"
+d:Ge/CaloBottom/HLX      = 20 cm
+d:Ge/CaloBottom/HLY      = 5 cm
+d:Ge/CaloBottom/HLZ      = 20 cm
+d:Ge/CaloBottom/TransX   = 0 cm
+d:Ge/CaloBottom/TransY   = -15 cm
+d:Ge/CaloBottom/TransZ   = 0 cm
+s:Ge/CaloBottom/Color    = "gray"
+
+# Left modules
+s:Ge/CaloLeft/Parent   = "Calorimeter"
+s:Ge/CaloLeft/Type     = "TsBox"
+s:Ge/CaloLeft/Material = "LeadGlass"
+d:Ge/CaloLeft/HLX      = 5 cm
+d:Ge/CaloLeft/HLY      = 10 cm
+d:Ge/CaloLeft/HLZ      = 20 cm
+d:Ge/CaloLeft/TransX   = -15 cm
+d:Ge/CaloLeft/TransY   = 0 cm
+d:Ge/CaloLeft/TransZ   = 0 cm
+s:Ge/CaloLeft/Color    = "gray"
+
+# Right modules
+s:Ge/CaloRight/Parent   = "Calorimeter"
+s:Ge/CaloRight/Type     = "TsBox"
+s:Ge/CaloRight/Material = "LeadGlass"
+d:Ge/CaloRight/HLX      = 5 cm
+d:Ge/CaloRight/HLY      = 10 cm
+d:Ge/CaloRight/HLZ      = 20 cm
+d:Ge/CaloRight/TransX   = 15 cm
+d:Ge/CaloRight/TransY   = 0 cm
+d:Ge/CaloRight/TransZ   = 0 cm
+s:Ge/CaloRight/Color    = "gray"
+
+#------------------------------------------------------------------------------
+# S2 - Trigger Scintillator (100x100x5 mm^3)
+# Coincidence trigger completion
+#------------------------------------------------------------------------------
+s:Ge/S2_Trigger/Parent   = "World"
+s:Ge/S2_Trigger/Type     = "TsBox"
+s:Ge/S2_Trigger/Material = "TriggerScint"
+d:Ge/S2_Trigger/HLX      = 50 mm
+d:Ge/S2_Trigger/HLY      = 50 mm
+d:Ge/S2_Trigger/HLZ      = 2.5 mm
+d:Ge/S2_Trigger/TransX   = 0 cm
+d:Ge/S2_Trigger/TransY   = 0 cm
+d:Ge/S2_Trigger/TransZ   = -120 cm
+d:Ge/S2_Trigger/RotX     = 0 deg
+d:Ge/S2_Trigger/RotY     = 0 deg
+d:Ge/S2_Trigger/RotZ     = 0 deg
+s:Ge/S2_Trigger/Color    = "yellow"
+
+#==============================================================================
+# OPTICAL SURFACE DEFINITIONS
+#==============================================================================
+
+# Surface detector for optical photon detection at photocathode
+# Per OpenTOPAS example: OpticalPhotonCount.txt
+s:Su/SurfaceDetector/Type                = "dielectric_metal"
+s:Su/SurfaceDetector/Finish              = "polished"
+s:Su/SurfaceDetector/Model               = "unified"
+# Quantum efficiency for Hamamatsu H10721-210 bialkali photocathode
+# Peak QE ~25% at 420nm (2.95 eV)
+dv:Su/SurfaceDetector/Efficiency/Energies   = 6 2.08 2.48 2.76 2.95 3.26 3.54 eV
+uv:Su/SurfaceDetector/Efficiency/Values     = 6 0.10 0.18 0.24 0.25 0.22 0.15
+dv:Su/SurfaceDetector/Reflectivity/Energies = 4 2.0 3.0 4.0 5.0 eV
+uv:Su/SurfaceDetector/Reflectivity/Values   = 4 0.0 0.0 0.0 0.0

@@ -1,0 +1,37 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation - Pion Beam Source
+# T09 beamline pion (pi+) beam with realistic parameters
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# PION (PI+) BEAM SOURCE
+# Momentum specified via parameter override in run files
+# Default: 1 GeV/c for testing
+#------------------------------------------------------------------------------
+s:So/PionBeam/Type                     = "Beam"
+s:So/PionBeam/Component                = "World"
+s:So/PionBeam/BeamParticle             = "pi+"
+
+# Momentum (GeV/c) - will be overridden per run
+d:So/PionBeam/BeamMomentum             = 1.0 GeV/c
+
+# Energy spread (relative, σE/E ~ 1% for T09)
+u:So/PionBeam/BeamEnergySpread         = 0.01
+
+# Position distribution (Gaussian with 5mm sigma, typical T09 spot)
+s:So/PionBeam/BeamPositionDistribution = "Gaussian"
+d:So/PionBeam/BeamPositionSpreadX      = 5 mm
+d:So/PionBeam/BeamPositionSpreadY      = 5 mm
+s:So/PionBeam/BeamPositionCutoffShape  = "Ellipse"
+d:So/PionBeam/BeamPositionCutoffX      = 15 mm
+d:So/PionBeam/BeamPositionCutoffY      = 15 mm
+
+# Angular distribution (Gaussian with ~1 mrad divergence)
+s:So/PionBeam/BeamAngularDistribution  = "Gaussian"
+d:So/PionBeam/BeamAngularSpreadX       = 1 mrad
+d:So/PionBeam/BeamAngularSpreadY       = 1 mrad
+d:So/PionBeam/BeamAngularCutoffX       = 5 mrad
+d:So/PionBeam/BeamAngularCutoffY       = 5 mrad
+
+# Number of histories (will be overridden per run)
+i:So/PionBeam/NumberOfHistoriesInRun   = 10000

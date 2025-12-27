@@ -1,0 +1,24 @@
+Dear Editor,
+
+We submit for consideration our manuscript titled "Multi-Method Validation Framework for Teaching Radiation Transport: Comparing Monte Carlo, Analytical, and Physics-Informed Machine Learning Approaches" for publication in the European Journal of Physics.
+
+This work addresses a critical gap in computational physics education: the validation of AI-driven models against established physics. Our educational framework demonstrates how Monte Carlo simulation, analytical theory, and physics-informed neural networks complement each other, with quantifiable improvements (52.5%) from physics constraints.
+
+Key contributions include:
+1. First application of PINNs to radiation transport education
+2. Complete open-source framework with pre-trained models
+3. Systematic ablation study revealing when physics constraints help/hurt
+4. Cross-material validation demonstrating framework generalizability
+
+The manuscript is appropriate for EJP's focus on physics education and includes classroom-ready materials. All authors have approved this submission. The work has not been published elsewhere and is not under consideration by another journal.
+
+We suggest the following potential reviewers:
+- Prof. [Expert in PINNs]
+- Prof. [Expert in physics education]  
+- Prof. [Expert in medical physics education]
+
+Thank you for your consideration.
+
+Sincerely,
+Yash Varshney
+On behalf of all authors

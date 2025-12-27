@@ -1,0 +1,46 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation
+# RUN CONFIGURATION: Proton 0.5 GeV/c
+#
+# Per proposal: T09 beamline provides 0.5-6 GeV/c momentum range
+# This is the lowest momentum setting - highest dE/dx, most quenching
+#==============================================================================
+
+includeFile = ../geometry/KAVACH_Beamline.txt
+includeFile = ../physics/KAVACH_Physics.txt
+includeFile = ../scorers/KAVACH_Scorers.txt
+includeFile = ../sources/ProtonBeam.txt
+
+#------------------------------------------------------------------------------
+# BEAM CONFIGURATION
+#------------------------------------------------------------------------------
+d:So/ProtonBeam/BeamMomentum = 0.5 GeV/c
+
+# Per proposal: 10,000 triggered events per configuration
+i:So/ProtonBeam/NumberOfHistoriesInRun = 10000
+
+s:Sc/OutputDir = "../output/proton/0p5GeV/"
+
+#------------------------------------------------------------------------------
+# RUNTIME OPTIONS
+#------------------------------------------------------------------------------
+i:Ts/Seed = 5345
+i:Ts/NumberOfThreads = 4
+i:Ts/ShowHistoryCountAtInterval = 1000
+b:Ts/ShowCPUTime = "True"
+b:Ts/PauseBeforeQuit = "False"
+i:Ts/SequenceVerbosity = 1
+
+#------------------------------------------------------------------------------
+# PHYSICS METADATA (for analysis reference)
+# Calculated using Bethe-Bloch from proposal
+#------------------------------------------------------------------------------
+# Particle: proton
+# Momentum: 0.5 GeV/c
+# Kinetic Energy: 130.6 MeV (relativistic: E = √(p² + m²) - m)
+# β = p/(E+m) = 500/1068.9 = 0.468
+# γ = 1/√(1-β²) = 1.139
+# Expected dE/dx: ~3.5 MeV/cm (above MIP, significant quenching)
+# Birks: Q = 1/(1 + 0.0126 * 3.5) = 0.957 ± 0.003
+# This run tests the low-momentum, high-quenching regime
+#==============================================================================

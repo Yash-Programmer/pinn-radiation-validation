@@ -1,0 +1,17 @@
+# NIST PSTAR Reference Data for Polystyrene (C8H8)
+# Source: NIST PSTAR Database - LIVE DATA from physics.nist.gov
+# Downloaded: December 27, 2025 via browser automation
+# Material: Polystyrene (density 1.060 g/cm³)
+# For EJ-200 (density 1.023 g/cm³): multiply range by (1.060/1.023) for correction
+#
+# Columns:
+# Energy_MeV, Total_Stopping_Power_MeV_cm2_per_g
+#
+Energy_MeV,Total_Stopping_Power_MeV_cm2_per_g
+70,9.369
+100,7.140
+200,4.397
+500,2.683
+1000,2.153
+2000,1.960
+5000,1.970

@@ -1,0 +1,98 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation - Research-Grade Physics Configuration
+#
+# Comprehensive physics list for accurate quenching simulation:
+# - High-precision electromagnetic physics (ionization, scattering)
+# - Hadronic physics for protons and pions
+# - Optical physics with scintillation and Cherenkov
+# - Explicit Birks quenching model
+#
+# Per proposal: "OpenTOPAS Monte Carlo framework (based on Geant4), 
+# validated against NIST PSTAR experimental database"
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# PHYSICS LIST CONFIGURATION
+#------------------------------------------------------------------------------
+s:Ph/ListName         = "KAVACH_Physics"
+s:Ph/Default/Type     = "Geant4_Modular"
+
+# Physics modules selected for hadron therapy simulation
+# Order matters: put most commonly used processes first
+sv:Ph/Default/Modules = 6 
+    "g4em-standard_opt4"      # NIST-validated EM physics
+    "g4h-phy_QGSP_BIC_HP"     # Hadronic with HP for protons
+    "g4optical"               # Optical photon transport
+    "g4decay"                 # Pion decay (π+ → μ+ + νμ)
+    "g4ion-binarycascade"     # Heavy ion physics (if needed)
+    "g4stopping"              # Low-energy stopping processes
+
+#------------------------------------------------------------------------------
+# PRODUCTION CUTS
+# Per proposal: high precision required for quenching measurement
+# Fine cuts in target scintillator volume
+#------------------------------------------------------------------------------
+d:Ph/Default/CutForGamma         = 0.1 mm
+d:Ph/Default/CutForElectron      = 0.1 mm
+d:Ph/Default/CutForPositron      = 0.1 mm
+d:Ph/Default/CutForProton        = 0.05 mm
+
+# Even finer cuts in target scintillator for accurate dE/dx
+# This is CRITICAL for Birks' law validation
+d:Ph/Default/ForRegion/TargetScint/CutForGamma    = 0.01 mm
+d:Ph/Default/ForRegion/TargetScint/CutForElectron = 0.01 mm
+d:Ph/Default/ForRegion/TargetScint/CutForPositron = 0.01 mm
+d:Ph/Default/ForRegion/TargetScint/CutForProton   = 0.01 mm
+
+#------------------------------------------------------------------------------
+# ELECTROMAGNETIC PHYSICS OPTIONS
+# Using standard_opt4 for NIST-validated stopping powers
+#------------------------------------------------------------------------------
+b:Ph/Default/EMRangeRejection = "False"
+d:Ph/Default/LowestElectronEnergy = 100 eV
+
+# Step limiter for accurate dE/dx along track
+d:Ph/Default/MaxStepSize = 0.5 mm
+
+#------------------------------------------------------------------------------
+# OPTICAL PHYSICS OPTIONS
+# Enable scintillation and Cherenkov processes
+#------------------------------------------------------------------------------
+b:Ph/Default/Scintillation/Active = "True"
+b:Ph/Default/Cerenkov/Active = "True"
+
+# Maximum photons per step (balance accuracy vs speed)
+# Per proposal: need accurate photon counts for Q measurement
+i:Ph/Default/Cerenkov/MaxPhotonsPerStep = 500
+i:Ph/Default/Scintillation/MaxPhotonsPerStep = 500
+
+# Enable finite rise time for pulse shape analysis
+b:Ph/Default/Scintillation/FiniteRiseTime = "True"
+
+# Track optical photons with absorption and Rayleigh scattering
+b:Ph/Default/OpAbsorption/Active = "True"
+b:Ph/Default/OpRayleigh/Active = "True"
+
+#------------------------------------------------------------------------------
+# HADRONIC PHYSICS OPTIONS
+# QGSP_BIC_HP is recommended for proton therapy simulations
+# HP = High Precision neutron transport (for secondaries)
+#------------------------------------------------------------------------------
+b:Ph/Default/UsePionHadronicModels = "True"
+
+#------------------------------------------------------------------------------
+# ENERGY RANGE FOR PHYSICS
+# T09 beamline: 0.5 - 6 GeV/c momentum
+# Kinetic energy range:
+#   Proton: ~130 MeV (0.5 GeV/c) to ~5.3 GeV (6 GeV/c)
+#   Pion: ~360 MeV (0.5 GeV/c) to ~5.98 GeV (6 GeV/c)
+#------------------------------------------------------------------------------
+d:Ph/Default/EMMaxEnergy = 10 GeV
+d:Ph/Default/EMMinEnergy = 100 eV
+d:Ph/Default/HadronicMaxEnergy = 10 GeV
+
+#------------------------------------------------------------------------------
+# VARIANCE REDUCTION
+# Disabled for research-grade simulation (need accurate statistics)
+#------------------------------------------------------------------------------
+b:Ph/Default/UseVarianceReduction = "False"

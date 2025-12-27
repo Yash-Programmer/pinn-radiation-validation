@@ -1,0 +1,104 @@
+# KAVACH BL4S - 2D Dose Distribution: 150 MeV Proton
+# Full 2D scoring (lateral × depth) for realistic geometry validation
+
+i:Ts/Seed = 6250
+i:Ts/NumberOfThreads = 4
+i:Ts/ShowHistoryCountAtInterval = 1000
+b:Ts/PauseBeforeQuit = "False"
+b:Ts/ShowCPUTime = "True"
+i:Ts/SequenceVerbosity = 0
+
+# Physics with fine cuts
+s:Ph/ListName = "Research"
+s:Ph/Research/Type = "Geant4_Modular"
+sv:Ph/Research/Modules = 3 "g4em-standard_opt4" "g4h-phy_QGSP_BIC_HP" "g4decay"
+d:Ph/Research/CutForGamma = 0.05 mm
+d:Ph/Research/CutForElectron = 0.05 mm
+d:Ph/Research/CutForPositron = 0.05 mm
+d:Ph/Research/CutForProton = 0.05 mm
+
+# World
+s:Ge/World/Material = "G4_AIR"
+d:Ge/World/HLX = 50.0 cm
+d:Ge/World/HLY = 50.0 cm
+d:Ge/World/HLZ = 200.0 cm
+b:Ge/World/Invisible = "True"
+
+# EJ-200 with Birks' Law
+sv:Ma/EJ200/Components = 2 "Hydrogen" "Carbon"
+uv:Ma/EJ200/Fractions = 2 0.0847 0.9153
+d:Ma/EJ200/Density = 1.023 g/cm3
+d:Ma/EJ200/MeanExcitationEnergy = 64.7 eV
+s:Ma/EJ200/DefaultColor = "lightblue"
+u:Ma/EJ200/BirksConstant = 0.1232
+
+# Larger target for 2D scoring
+s:Ge/TargetScint/Type = "TsBox"
+s:Ge/TargetScint/Parent = "World"
+s:Ge/TargetScint/Material = "EJ200"
+d:Ge/TargetScint/HLX = 30.0 mm
+d:Ge/TargetScint/HLY = 30.0 mm
+d:Ge/TargetScint/HLZ = 10.0 mm
+d:Ge/TargetScint/TransZ = 0.0 cm
+s:Ge/TargetScint/Color = "lightblue"
+
+# Proton beam
+s:So/Proton/Type = "Beam"
+s:So/Proton/Component = "BeamPosition"
+s:So/Proton/BeamParticle = "proton"
+d:So/Proton/BeamEnergy = 150 MeV
+u:So/Proton/BeamEnergySpread = 0.01
+s:So/Proton/BeamPositionDistribution = "Gaussian"
+s:So/Proton/BeamPositionCutoffShape = "Ellipse"
+d:So/Proton/BeamPositionCutoffX = 15.0 mm
+d:So/Proton/BeamPositionCutoffY = 15.0 mm
+d:So/Proton/BeamPositionSpreadX = 3.0 mm
+d:So/Proton/BeamPositionSpreadY = 3.0 mm
+s:So/Proton/BeamAngularDistribution = "Gaussian"
+d:So/Proton/BeamAngularCutoffX = 90. deg
+d:So/Proton/BeamAngularCutoffY = 90. deg
+d:So/Proton/BeamAngularSpreadX = 0.001 rad
+d:So/Proton/BeamAngularSpreadY = 0.001 rad
+i:So/Proton/NumberOfHistoriesInRun = 20000
+
+# 2D Dose Scoring (X lateral × Z depth)
+s:Sc/Dose2D/Quantity = "DoseToMedium"
+s:Sc/Dose2D/Component = "TargetScint"
+s:Sc/Dose2D/OutputFile = "Dose2D_150MeV"
+s:Sc/Dose2D/OutputType = "csv"
+b:Sc/Dose2D/OutputToConsole = "FALSE"
+s:Sc/Dose2D/IfOutputFileAlreadyExists = "Overwrite"
+i:Sc/Dose2D/XBins = 30
+i:Sc/Dose2D/YBins = 1
+i:Sc/Dose2D/ZBins = 50
+
+# Radial energy deposit (for cylindrical symmetry analysis)
+s:Sc/EnergyDep2D/Quantity = "EnergyDeposit"
+s:Sc/EnergyDep2D/Component = "TargetScint"
+s:Sc/EnergyDep2D/OutputFile = "EnergyDep2D_150MeV"
+s:Sc/EnergyDep2D/OutputType = "csv"
+b:Sc/EnergyDep2D/OutputToConsole = "FALSE"
+s:Sc/EnergyDep2D/IfOutputFileAlreadyExists = "Overwrite"
+i:Sc/EnergyDep2D/XBins = 30
+i:Sc/EnergyDep2D/YBins = 1
+i:Sc/EnergyDep2D/ZBins = 50
+
+# 1D Depth profile (integrated over lateral)
+s:Sc/DepthProfile/Quantity = "EnergyDeposit"
+s:Sc/DepthProfile/Component = "TargetScint"
+s:Sc/DepthProfile/OutputFile = "DepthProfile_150MeV"
+s:Sc/DepthProfile/OutputType = "csv"
+b:Sc/DepthProfile/OutputToConsole = "TRUE"
+s:Sc/DepthProfile/IfOutputFileAlreadyExists = "Overwrite"
+i:Sc/DepthProfile/ZBins = 100
+
+# 1D Lateral profile (at fixed depth, center)
+s:Sc/LateralProfile/Quantity = "EnergyDeposit"
+s:Sc/LateralProfile/Component = "TargetScint"
+s:Sc/LateralProfile/OutputFile = "LateralProfile_150MeV"
+s:Sc/LateralProfile/OutputType = "csv"
+b:Sc/LateralProfile/OutputToConsole = "TRUE"
+s:Sc/LateralProfile/IfOutputFileAlreadyExists = "Overwrite"
+i:Sc/LateralProfile/XBins = 60
+
+s:Sc/OutputDir = "../output/dose2d/"

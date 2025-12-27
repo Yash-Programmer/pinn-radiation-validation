@@ -1,0 +1,22 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation
+# RUN CONFIGURATION: Pion+ 4.0 GeV/c
+#==============================================================================
+
+includeFile = ../geometry/KAVACH_Beamline.txt
+includeFile = ../physics/KAVACH_Physics.txt
+includeFile = ../scorers/KAVACH_Scorers.txt
+includeFile = ../sources/PionBeam.txt
+
+d:So/PionBeam/BeamMomentum = 4.0 GeV/c
+i:So/PionBeam/NumberOfHistoriesInRun = 10000
+s:Sc/OutputDir = "../output/pion/4GeV/"
+
+i:Ts/Seed = 142345
+i:Ts/NumberOfThreads = 4
+i:Ts/ShowHistoryCountAtInterval = 1000
+b:Ts/ShowCPUTime = "True"
+b:Ts/PauseBeforeQuit = "False"
+i:Ts/SequenceVerbosity = 1
+
+# Metadata: pi+ 4.0 GeV/c, KE=3858 MeV, dE/dx~1.6 MeV/cm, Q~0.980

@@ -1,0 +1,38 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation - Electron Beam Source
+# T09 beamline electron beam for MIP calibration
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# ELECTRON BEAM SOURCE
+# Used for calibration (minimum ionizing particles)
+# Momentum specified via parameter override in run files
+# Default: 2 GeV/c for testing
+#------------------------------------------------------------------------------
+s:So/ElectronBeam/Type                     = "Beam"
+s:So/ElectronBeam/Component                = "World"
+s:So/ElectronBeam/BeamParticle             = "e-"
+
+# Momentum (GeV/c) - will be overridden per run
+d:So/ElectronBeam/BeamMomentum             = 2.0 GeV/c
+
+# Energy spread (relative, σE/E ~ 1% for T09)
+u:So/ElectronBeam/BeamEnergySpread         = 0.01
+
+# Position distribution (Gaussian with 5mm sigma, typical T09 spot)
+s:So/ElectronBeam/BeamPositionDistribution = "Gaussian"
+d:So/ElectronBeam/BeamPositionSpreadX      = 5 mm
+d:So/ElectronBeam/BeamPositionSpreadY      = 5 mm
+s:So/ElectronBeam/BeamPositionCutoffShape  = "Ellipse"
+d:So/ElectronBeam/BeamPositionCutoffX      = 15 mm
+d:So/ElectronBeam/BeamPositionCutoffY      = 15 mm
+
+# Angular distribution (Gaussian with ~1 mrad divergence)
+s:So/ElectronBeam/BeamAngularDistribution  = "Gaussian"
+d:So/ElectronBeam/BeamAngularSpreadX       = 1 mrad
+d:So/ElectronBeam/BeamAngularSpreadY       = 1 mrad
+d:So/ElectronBeam/BeamAngularCutoffX       = 5 mrad
+d:So/ElectronBeam/BeamAngularCutoffY       = 5 mrad
+
+# Number of histories (will be overridden per run)
+i:So/ElectronBeam/NumberOfHistoriesInRun   = 10000

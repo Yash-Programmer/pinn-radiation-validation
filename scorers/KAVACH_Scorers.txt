@@ -1,0 +1,401 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation - Research-Grade Scorers
+# 
+# Comprehensive event-by-event data collection for quenching analysis
+# Per proposal methodology:
+#   Step 1: Select clean single-particle events using DWC tracking
+#   Step 2: Identify particle type from Cherenkov response
+#   Step 3: Calculate deposited energy from calorimeter and momentum
+#   Step 4: Measure scintillator light output (integrated PMT charge)
+#   Step 5: Compute quenching factor: Q = L_measured / L_expected
+#==============================================================================
+
+# Output directory (overridden in run files)
+s:Sc/OutputDir = "../output/"
+
+#==============================================================================
+# SECTION 1: PRIMARY QUENCHING MEASUREMENT
+# Event-by-event data for Q = L / (E_dep * LY_0)
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# 1. NTUPLE: Event-by-Event Target Scintillator Data
+# This is the PRIMARY dataset for quenching analysis
+# Records: Energy deposited, optical photons produced, particle info
+#------------------------------------------------------------------------------
+s:Sc/TargetNtuple/Quantity                  = "PhaseSpace"
+s:Sc/TargetNtuple/Surface                   = "TargetScint/ZPlusSurface"
+s:Sc/TargetNtuple/OutputType                = "ASCII"
+s:Sc/TargetNtuple/OutputFile                = "TargetScint_Ntuple"
+s:Sc/TargetNtuple/IfOutputFileAlreadyExists = "Overwrite"
+b:Sc/TargetNtuple/IncludeTimeOfFlight       = "True"
+b:Sc/TargetNtuple/IncludeRunID              = "True"
+b:Sc/TargetNtuple/IncludeEventID            = "True"
+b:Sc/TargetNtuple/IncludeTrackID            = "True"
+b:Sc/TargetNtuple/IncludeParentID           = "True"
+b:Sc/TargetNtuple/IncludeCreatorProcess     = "True"
+b:Sc/TargetNtuple/IncludeVertexInfo         = "True"
+b:Sc/TargetNtuple/IncludeSeed               = "True"
+b:Sc/TargetNtuple/UsePDGEncoding            = "True"
+s:Sc/TargetNtuple/OnlyIncludeParticlesGoing = "In"
+
+#------------------------------------------------------------------------------
+# 2. ENERGY DEPOSIT in Target - With dE/dx binning
+# For Birks law verification: Q = S / (1 + kB * dE/dx)
+#------------------------------------------------------------------------------
+s:Sc/Scint_EnergyDep/Quantity                  = "EnergyDeposit"
+s:Sc/Scint_EnergyDep/Component                 = "TargetScint"
+s:Sc/Scint_EnergyDep/OutputFile                = "Scint_EnergyDeposit"
+s:Sc/Scint_EnergyDep/OutputType                = "csv"
+s:Sc/Scint_EnergyDep/IfOutputFileAlreadyExists = "Overwrite"
+b:Sc/Scint_EnergyDep/OutputToConsole           = "True"
+# Bin by Z to get dE/dx profile through scintillator
+i:Sc/Scint_EnergyDep/ZBins                     = 100
+
+#------------------------------------------------------------------------------
+# 3. DOSE TO MEDIUM - Actual scintillator material
+#------------------------------------------------------------------------------
+s:Sc/Scint_DoseToMedium/Quantity                  = "DoseToMedium"
+s:Sc/Scint_DoseToMedium/Component                 = "TargetScint"
+s:Sc/Scint_DoseToMedium/OutputFile                = "Scint_DoseToMedium"
+s:Sc/Scint_DoseToMedium/OutputType                = "csv"
+s:Sc/Scint_DoseToMedium/IfOutputFileAlreadyExists = "Overwrite"
+b:Sc/Scint_DoseToMedium/OutputToConsole           = "True"
+
+#------------------------------------------------------------------------------
+# 5. PROTON LET - Direct measurement for Birks validation
+# dE/dx in keV/μm is the key variable for quenching
+#------------------------------------------------------------------------------
+s:Sc/Scint_LET/Quantity                  = "ProtonLET"
+s:Sc/Scint_LET/Component                 = "TargetScint"
+s:Sc/Scint_LET/OutputFile                = "Scint_ProtonLET"
+s:Sc/Scint_LET/OutputType                = "csv"
+s:Sc/Scint_LET/IfOutputFileAlreadyExists = "Overwrite"
+s:Sc/Scint_LET/WeightBy                  = "Track"
+b:Sc/Scint_LET/OutputToConsole           = "True"
+i:Sc/Scint_LET/ZBins                     = 100
+
+#------------------------------------------------------------------------------
+# 6. FLUENCE - Particle counting per unit area
+#------------------------------------------------------------------------------
+s:Sc/Scint_Fluence/Quantity                  = "Fluence"
+s:Sc/Scint_Fluence/Component                 = "TargetScint"
+s:Sc/Scint_Fluence/OutputFile                = "Scint_Fluence"
+s:Sc/Scint_Fluence/OutputType                = "csv"
+s:Sc/Scint_Fluence/IfOutputFileAlreadyExists = "Overwrite"
+
+#------------------------------------------------------------------------------
+# 7. ENERGY FLUENCE - Energy-weighted for heating studies
+#------------------------------------------------------------------------------
+s:Sc/Scint_EnergyFluence/Quantity                  = "EnergyFluence"
+s:Sc/Scint_EnergyFluence/Component                 = "TargetScint"
+s:Sc/Scint_EnergyFluence/OutputFile                = "Scint_EnergyFluence"
+s:Sc/Scint_EnergyFluence/OutputType                = "csv"
+s:Sc/Scint_EnergyFluence/IfOutputFileAlreadyExists = "Overwrite"
+
+#==============================================================================
+# SECTION 2: OPTICAL PHOTON DETECTION
+# PMT output = L_measured for quenching factor
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# 8. OPTICAL PHOTON COUNT AT PHOTOCATHODE
+# PRIMARY LIGHT YIELD MEASUREMENT
+# This is L_measured in Q = L_measured / L_expected
+#------------------------------------------------------------------------------
+s:Sc/OpticalPhotons/Quantity                  = "OpticalPhotonCount"
+s:Sc/OpticalPhotons/Component                 = "Photocathode"
+s:Sc/OpticalPhotons/OutputFile                = "OpticalPhotonCount"
+s:Sc/OpticalPhotons/OutputType                = "csv"
+s:Sc/OpticalPhotons/IfOutputFileAlreadyExists = "Overwrite"
+b:Sc/OpticalPhotons/OutputToConsole           = "True"
+i:Sc/OpticalPhotons/BounceLimit               = 500000
+
+#------------------------------------------------------------------------------
+# 9. OPTICAL PHOTON TIME SPECTRUM
+# For pulse shape analysis per proposal protocol
+#------------------------------------------------------------------------------
+s:Sc/OpticalSpectrum/Quantity                    = "PhaseSpace"
+s:Sc/OpticalSpectrum/Surface                     = "Photocathode/ZPlusSurface"
+s:Sc/OpticalSpectrum/OutputFile                  = "OpticalPhoton_PhaseSpace"
+s:Sc/OpticalSpectrum/OutputType                  = "ASCII"
+s:Sc/OpticalSpectrum/IfOutputFileAlreadyExists   = "Overwrite"
+sv:Sc/OpticalSpectrum/OnlyIncludeParticlesNamed  = 1 "opticalphoton"
+b:Sc/OpticalSpectrum/IncludeTimeOfFlight         = "True"
+b:Sc/OpticalSpectrum/IncludeEventID              = "True"
+b:Sc/OpticalSpectrum/UsePDGEncoding              = "True"
+
+#------------------------------------------------------------------------------
+# 10. OPTICAL PHOTON COUNT IN TARGET (produced, not detected)
+# For collection efficiency calculation
+#------------------------------------------------------------------------------
+s:Sc/ScintPhotons/Quantity                  = "OpticalPhotonCount"
+s:Sc/ScintPhotons/Component                 = "TargetScint"
+s:Sc/ScintPhotons/OutputFile                = "ScintPhotons_Produced"
+s:Sc/ScintPhotons/OutputType                = "csv"
+s:Sc/ScintPhotons/IfOutputFileAlreadyExists = "Overwrite"
+b:Sc/ScintPhotons/OutputToConsole           = "True"
+i:Sc/ScintPhotons/BounceLimit               = 500000
+
+#==============================================================================
+# SECTION 3: TRIGGER AND TIMING (S1·S2 coincidence)
+# Per proposal: coincidence requirement within 25 ns window
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# 11. S1 TRIGGER - Entry timing
+#------------------------------------------------------------------------------
+s:Sc/S1_PhSp/Quantity                    = "PhaseSpace"
+s:Sc/S1_PhSp/Surface                     = "S1_Trigger/ZMinusSurface"
+s:Sc/S1_PhSp/OutputFile                  = "S1_PhaseSpace"
+s:Sc/S1_PhSp/OutputType                  = "ASCII"
+s:Sc/S1_PhSp/IfOutputFileAlreadyExists   = "Overwrite"
+b:Sc/S1_PhSp/IncludeTimeOfFlight         = "True"
+b:Sc/S1_PhSp/IncludeRunID                = "True"
+b:Sc/S1_PhSp/IncludeEventID              = "True"
+b:Sc/S1_PhSp/IncludeTrackID              = "True"
+b:Sc/S1_PhSp/UsePDGEncoding              = "True"
+s:Sc/S1_PhSp/OnlyIncludeParticlesGoing   = "In"
+
+#------------------------------------------------------------------------------
+# 12. S2 TRIGGER - Exit timing for coincidence
+#------------------------------------------------------------------------------
+s:Sc/S2_PhSp/Quantity                    = "PhaseSpace"
+s:Sc/S2_PhSp/Surface                     = "S2_Trigger/ZMinusSurface"
+s:Sc/S2_PhSp/OutputFile                  = "S2_PhaseSpace"
+s:Sc/S2_PhSp/OutputType                  = "ASCII"
+s:Sc/S2_PhSp/IfOutputFileAlreadyExists   = "Overwrite"
+b:Sc/S2_PhSp/IncludeTimeOfFlight         = "True"
+b:Sc/S2_PhSp/IncludeEventID              = "True"
+b:Sc/S2_PhSp/IncludeTrackID              = "True"
+b:Sc/S2_PhSp/UsePDGEncoding              = "True"
+
+#------------------------------------------------------------------------------
+# 13. S1 ENERGY DEPOSIT (for pulse height)
+#------------------------------------------------------------------------------
+s:Sc/S1_EnergyDep/Quantity                  = "EnergyDeposit"
+s:Sc/S1_EnergyDep/Component                 = "S1_Trigger"
+s:Sc/S1_EnergyDep/OutputFile                = "S1_EnergyDeposit"
+s:Sc/S1_EnergyDep/OutputType                = "csv"
+s:Sc/S1_EnergyDep/IfOutputFileAlreadyExists = "Overwrite"
+b:Sc/S1_EnergyDep/OutputToConsole           = "True"
+
+#------------------------------------------------------------------------------
+# 14. S2 ENERGY DEPOSIT
+#------------------------------------------------------------------------------
+s:Sc/S2_EnergyDep/Quantity                  = "EnergyDeposit"
+s:Sc/S2_EnergyDep/Component                 = "S2_Trigger"
+s:Sc/S2_EnergyDep/OutputFile                = "S2_EnergyDeposit"
+s:Sc/S2_EnergyDep/OutputType                = "csv"
+s:Sc/S2_EnergyDep/IfOutputFileAlreadyExists = "Overwrite"
+
+#==============================================================================
+# SECTION 4: PARTICLE IDENTIFICATION (Cherenkov counter)
+# Per proposal: pion/proton separation using threshold Cherenkov
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# 15. CHERENKOV PHOTON COUNT
+# Threshold behavior:
+#   - Above threshold: Cherenkov light produced
+#   - Below threshold: No Cherenkov light
+#   - Use to discriminate pions (above) from protons (below)
+#------------------------------------------------------------------------------
+s:Sc/Cherenkov_Photons/Quantity                  = "OpticalPhotonCount"
+s:Sc/Cherenkov_Photons/Component                 = "Cherenkov"
+s:Sc/Cherenkov_Photons/OutputFile                = "Cherenkov_PhotonCount"
+s:Sc/Cherenkov_Photons/OutputType                = "csv"
+s:Sc/Cherenkov_Photons/IfOutputFileAlreadyExists = "Overwrite"
+b:Sc/Cherenkov_Photons/OutputToConsole           = "True"
+i:Sc/Cherenkov_Photons/BounceLimit               = 100000
+
+#------------------------------------------------------------------------------
+# 16. CHERENKOV PHASE SPACE (for ring imaging if needed)
+#------------------------------------------------------------------------------
+s:Sc/Cherenkov_PhSp/Quantity                    = "PhaseSpace"
+s:Sc/Cherenkov_PhSp/Surface                     = "Cherenkov/OuterCurvedSurface"
+s:Sc/Cherenkov_PhSp/OutputFile                  = "Cherenkov_PhaseSpace"
+s:Sc/Cherenkov_PhSp/OutputType                  = "ASCII"
+s:Sc/Cherenkov_PhSp/IfOutputFileAlreadyExists   = "Overwrite"
+sv:Sc/Cherenkov_PhSp/OnlyIncludeParticlesNamed  = 1 "opticalphoton"
+b:Sc/Cherenkov_PhSp/IncludeTimeOfFlight         = "True"
+b:Sc/Cherenkov_PhSp/IncludeEventID              = "True"
+
+#==============================================================================
+# SECTION 5: POSITION TRACKING (DWC1, DWC2)
+# Per proposal: ±200 μm resolution for clean event selection
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# 17. DWC1 POSITION (pre-target)
+#------------------------------------------------------------------------------
+s:Sc/DWC1_PhSp/Quantity                    = "PhaseSpace"
+s:Sc/DWC1_PhSp/Surface                     = "DWC1/ZMinusSurface"
+s:Sc/DWC1_PhSp/OutputFile                  = "DWC1_PhaseSpace"
+s:Sc/DWC1_PhSp/OutputType                  = "ASCII"
+s:Sc/DWC1_PhSp/IfOutputFileAlreadyExists   = "Overwrite"
+b:Sc/DWC1_PhSp/IncludeTimeOfFlight         = "True"
+b:Sc/DWC1_PhSp/IncludeEventID              = "True"
+b:Sc/DWC1_PhSp/IncludeTrackID              = "True"
+b:Sc/DWC1_PhSp/UsePDGEncoding              = "True"
+
+#------------------------------------------------------------------------------
+# 18. DWC2 POSITION (post-target, for trajectory confirmation)
+#------------------------------------------------------------------------------
+s:Sc/DWC2_PhSp/Quantity                    = "PhaseSpace"
+s:Sc/DWC2_PhSp/Surface                     = "DWC2/ZMinusSurface"
+s:Sc/DWC2_PhSp/OutputFile                  = "DWC2_PhaseSpace"
+s:Sc/DWC2_PhSp/OutputType                  = "ASCII"
+s:Sc/DWC2_PhSp/IfOutputFileAlreadyExists   = "Overwrite"
+b:Sc/DWC2_PhSp/IncludeTimeOfFlight         = "True"
+b:Sc/DWC2_PhSp/IncludeEventID              = "True"
+b:Sc/DWC2_PhSp/UsePDGEncoding              = "True"
+
+#==============================================================================
+# SECTION 6: CALORIMETER (Energy reference)
+# Per proposal: Lead glass provides independent energy measurement
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# 19. CALORIMETER ENERGY DEPOSIT
+# Reference for momentum/energy calibration
+#------------------------------------------------------------------------------
+s:Sc/Calo_EnergyDep/Quantity                  = "EnergyDeposit"
+s:Sc/Calo_EnergyDep/Component                 = "CaloCore"
+s:Sc/Calo_EnergyDep/OutputFile                = "Calo_EnergyDeposit"
+s:Sc/Calo_EnergyDep/OutputType                = "csv"
+s:Sc/Calo_EnergyDep/IfOutputFileAlreadyExists = "Overwrite"
+b:Sc/Calo_EnergyDep/OutputToConsole           = "True"
+
+#------------------------------------------------------------------------------
+# 20. CALORIMETER DEPTH PROFILE (for shower development)
+#------------------------------------------------------------------------------
+s:Sc/Calo_DepthDose/Quantity                  = "EnergyDeposit"
+s:Sc/Calo_DepthDose/Component                 = "CaloCore"
+s:Sc/Calo_DepthDose/OutputFile                = "Calo_DepthDose"
+s:Sc/Calo_DepthDose/OutputType                = "csv"
+s:Sc/Calo_DepthDose/IfOutputFileAlreadyExists = "Overwrite"
+i:Sc/Calo_DepthDose/ZBins                     = 40
+
+#------------------------------------------------------------------------------
+# 21. CALORIMETER ENTRY PHASE SPACE
+#------------------------------------------------------------------------------
+s:Sc/Calo_Entry/Quantity                    = "PhaseSpace"
+s:Sc/Calo_Entry/Surface                     = "Calorimeter/ZPlusSurface"
+s:Sc/Calo_Entry/OutputFile                  = "Calo_Entry_PhaseSpace"
+s:Sc/Calo_Entry/OutputType                  = "ASCII"
+s:Sc/Calo_Entry/IfOutputFileAlreadyExists   = "Overwrite"
+b:Sc/Calo_Entry/IncludeTimeOfFlight         = "True"
+b:Sc/Calo_Entry/IncludeEventID              = "True"
+b:Sc/Calo_Entry/IncludeTrackID              = "True"
+b:Sc/Calo_Entry/UsePDGEncoding              = "True"
+
+#==============================================================================
+# SECTION 7: UPSTREAM ENERGY LOSS TRACKING
+# Per proposal limitation: "Particles lose energy traversing trigger 
+# scintillators and air. Our simulation accounts for this..."
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# 22. ENERGY LOSS IN S1 (upstream material)
+#------------------------------------------------------------------------------
+s:Sc/S1_EnergyLoss/Quantity                  = "EnergyDeposit"
+s:Sc/S1_EnergyLoss/Component                 = "S1_Trigger"
+s:Sc/S1_EnergyLoss/OutputFile                = "S1_EnergyLoss"
+s:Sc/S1_EnergyLoss/OutputType                = "csv"
+s:Sc/S1_EnergyLoss/IfOutputFileAlreadyExists = "Overwrite"
+
+#------------------------------------------------------------------------------
+# 23. PHASE SPACE PRE-TARGET (after all upstream elements)
+# To calculate effective momentum at target
+#------------------------------------------------------------------------------
+s:Sc/PreTarget_PhSp/Quantity                    = "PhaseSpace"
+s:Sc/PreTarget_PhSp/Surface                     = "TargetScint/ZPlusSurface"
+s:Sc/PreTarget_PhSp/OutputFile                  = "PreTarget_PhaseSpace"
+s:Sc/PreTarget_PhSp/OutputType                  = "ASCII"
+s:Sc/PreTarget_PhSp/IfOutputFileAlreadyExists   = "Overwrite"
+b:Sc/PreTarget_PhSp/IncludeTimeOfFlight         = "True"
+b:Sc/PreTarget_PhSp/IncludeEventID              = "True"
+b:Sc/PreTarget_PhSp/IncludeTrackID              = "True"
+b:Sc/PreTarget_PhSp/IncludeParentID             = "True"
+b:Sc/PreTarget_PhSp/IncludeCreatorProcess       = "True"
+b:Sc/PreTarget_PhSp/IncludeVertexInfo           = "True"
+b:Sc/PreTarget_PhSp/UsePDGEncoding              = "True"
+s:Sc/PreTarget_PhSp/OnlyIncludeParticlesGoing   = "In"
+
+#------------------------------------------------------------------------------
+# 24. PHASE SPACE POST-TARGET
+#------------------------------------------------------------------------------
+s:Sc/PostTarget_PhSp/Quantity                    = "PhaseSpace"
+s:Sc/PostTarget_PhSp/Surface                     = "TargetScint/ZMinusSurface"
+s:Sc/PostTarget_PhSp/OutputFile                  = "PostTarget_PhaseSpace"
+s:Sc/PostTarget_PhSp/OutputType                  = "ASCII"
+s:Sc/PostTarget_PhSp/IfOutputFileAlreadyExists   = "Overwrite"
+b:Sc/PostTarget_PhSp/IncludeTimeOfFlight         = "True"
+b:Sc/PostTarget_PhSp/IncludeEventID              = "True"
+b:Sc/PostTarget_PhSp/IncludeTrackID              = "True"
+b:Sc/PostTarget_PhSp/UsePDGEncoding              = "True"
+s:Sc/PostTarget_PhSp/OnlyIncludeParticlesGoing   = "Out"
+
+#==============================================================================
+# SECTION 8: PARTICLE-TYPE SEPARATED SCORING
+# For systematic cross-checks
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# 25. PRIMARY PARTICLE ENERGY DEPOSIT ONLY
+#------------------------------------------------------------------------------
+s:Sc/Primary_EnergyDep/Quantity                       = "EnergyDeposit"
+s:Sc/Primary_EnergyDep/Component                      = "TargetScint"
+s:Sc/Primary_EnergyDep/OutputFile                     = "Primary_EnergyDeposit"
+s:Sc/Primary_EnergyDep/OutputType                     = "csv"
+s:Sc/Primary_EnergyDep/IfOutputFileAlreadyExists      = "Overwrite"
+s:Sc/Primary_EnergyDep/OnlyIncludeParticlesOfGeneration = "Primary"
+
+#------------------------------------------------------------------------------
+# 26. SECONDARY PARTICLE ENERGY DEPOSIT
+#------------------------------------------------------------------------------
+s:Sc/Secondary_EnergyDep/Quantity                       = "EnergyDeposit"
+s:Sc/Secondary_EnergyDep/Component                      = "TargetScint"
+s:Sc/Secondary_EnergyDep/OutputFile                     = "Secondary_EnergyDeposit"
+s:Sc/Secondary_EnergyDep/OutputType                     = "csv"
+s:Sc/Secondary_EnergyDep/IfOutputFileAlreadyExists      = "Overwrite"
+s:Sc/Secondary_EnergyDep/OnlyIncludeParticlesOfGeneration = "Secondary"
+
+#------------------------------------------------------------------------------
+# 27. ELECTRON/DELTA RAY ENERGY DEPOSIT
+# Important: delta rays contribute to quenching differently
+#------------------------------------------------------------------------------
+s:Sc/Electron_EnergyDep/Quantity                     = "EnergyDeposit"
+s:Sc/Electron_EnergyDep/Component                    = "TargetScint"
+s:Sc/Electron_EnergyDep/OutputFile                   = "Electron_EnergyDeposit"
+s:Sc/Electron_EnergyDep/OutputType                   = "csv"
+s:Sc/Electron_EnergyDep/IfOutputFileAlreadyExists    = "Overwrite"
+sv:Sc/Electron_EnergyDep/OnlyIncludeParticlesNamed   = 2 "e-" "e+"
+
+#------------------------------------------------------------------------------
+# 28. SURFACE TRACK COUNT (beam attenuation)
+#------------------------------------------------------------------------------
+s:Sc/BeamAttenuation/Quantity                  = "SurfaceTrackCount"
+s:Sc/BeamAttenuation/Surface                   = "TargetScint/ZMinusSurface"
+s:Sc/BeamAttenuation/OutputFile                = "BeamAttenuation"
+s:Sc/BeamAttenuation/OutputType                = "csv"
+s:Sc/BeamAttenuation/IfOutputFileAlreadyExists = "Overwrite"
+
+#------------------------------------------------------------------------------
+# 29. SURFACE CURRENT (net particle flow)
+#------------------------------------------------------------------------------
+s:Sc/SurfaceCurrent/Quantity                  = "SurfaceCurrent"
+s:Sc/SurfaceCurrent/Surface                   = "TargetScint/ZMinusSurface"
+s:Sc/SurfaceCurrent/OutputFile                = "SurfaceCurrent"
+s:Sc/SurfaceCurrent/OutputType                = "csv"
+s:Sc/SurfaceCurrent/IfOutputFileAlreadyExists = "Overwrite"
+
+#------------------------------------------------------------------------------
+# 30. STEP COUNT (for computational validation)
+#------------------------------------------------------------------------------
+s:Sc/StepCount/Quantity                  = "StepCount"
+s:Sc/StepCount/Component                 = "TargetScint"
+s:Sc/StepCount/OutputFile                = "StepCount"
+s:Sc/StepCount/OutputType                = "csv"
+s:Sc/StepCount/IfOutputFileAlreadyExists = "Overwrite"

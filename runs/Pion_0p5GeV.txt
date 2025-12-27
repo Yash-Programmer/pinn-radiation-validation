@@ -1,0 +1,35 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation
+# RUN CONFIGURATION: Pion 0.5 GeV/c
+#
+# Per proposal: Pion measurements at same momentum range as protons
+#==============================================================================
+
+includeFile = ../geometry/KAVACH_Beamline.txt
+includeFile = ../physics/KAVACH_Physics.txt
+includeFile = ../scorers/KAVACH_Scorers.txt
+includeFile = ../sources/PionBeam.txt
+
+d:So/PionBeam/BeamMomentum = 0.5 GeV/c
+i:So/PionBeam/NumberOfHistoriesInRun = 10000
+s:Sc/OutputDir = "../output/pion/0p5GeV/"
+
+i:Ts/Seed = 105345
+i:Ts/NumberOfThreads = 4
+i:Ts/ShowHistoryCountAtInterval = 1000
+b:Ts/ShowCPUTime = "True"
+b:Ts/PauseBeforeQuit = "False"
+i:Ts/SequenceVerbosity = 1
+
+#------------------------------------------------------------------------------
+# PHYSICS METADATA
+#------------------------------------------------------------------------------
+# Particle: π+
+# Momentum: 0.5 GeV/c
+# Mass: 139.6 MeV/c²
+# Kinetic Energy: 378.0 MeV
+# β = 0.963, γ = 3.71
+# Expected dE/dx: ~2.0 MeV/cm (near MIP)
+# Expected Q: 0.976 ± 0.002
+# Cherenkov: ABOVE threshold in CO2 (β > 0.9996 needed) → some light
+#==============================================================================

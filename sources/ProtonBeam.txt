@@ -1,0 +1,37 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation - Proton Beam Source
+# T09 beamline proton beam with realistic parameters
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# PROTON BEAM SOURCE
+# Momentum specified via parameter override in run files
+# Default: 1 GeV/c for testing
+#------------------------------------------------------------------------------
+s:So/ProtonBeam/Type                     = "Beam"
+s:So/ProtonBeam/Component                = "World"
+s:So/ProtonBeam/BeamParticle             = "proton"
+
+# Momentum (GeV/c) - will be overridden per run
+d:So/ProtonBeam/BeamMomentum             = 1.0 GeV/c
+
+# Energy spread (relative, σE/E ~ 1% for T09)
+u:So/ProtonBeam/BeamEnergySpread         = 0.01
+
+# Position distribution (Gaussian with 5mm sigma, typical T09 spot)
+s:So/ProtonBeam/BeamPositionDistribution = "Gaussian"
+d:So/ProtonBeam/BeamPositionSpreadX      = 5 mm
+d:So/ProtonBeam/BeamPositionSpreadY      = 5 mm
+s:So/ProtonBeam/BeamPositionCutoffShape  = "Ellipse"
+d:So/ProtonBeam/BeamPositionCutoffX      = 15 mm
+d:So/ProtonBeam/BeamPositionCutoffY      = 15 mm
+
+# Angular distribution (Gaussian with ~1 mrad divergence)
+s:So/ProtonBeam/BeamAngularDistribution  = "Gaussian"
+d:So/ProtonBeam/BeamAngularSpreadX       = 1 mrad
+d:So/ProtonBeam/BeamAngularSpreadY       = 1 mrad
+d:So/ProtonBeam/BeamAngularCutoffX       = 5 mrad
+d:So/ProtonBeam/BeamAngularCutoffY       = 5 mrad
+
+# Number of histories (will be overridden per run)
+i:So/ProtonBeam/NumberOfHistoriesInRun   = 10000

@@ -1,0 +1,102 @@
+# KAVACH BL4S - RESEARCH-GRADE: 300 MeV Proton
+# Features: Birks' Law, ProtonLET, Phase Space, Fine Cuts
+
+i:Ts/Seed = 30001
+i:Ts/NumberOfThreads = 4
+i:Ts/ShowHistoryCountAtInterval = 1000
+b:Ts/PauseBeforeQuit = "False"
+b:Ts/ShowCPUTime = "True"
+i:Ts/SequenceVerbosity = 0
+
+# Physics with fine cuts
+s:Ph/ListName = "Research"
+s:Ph/Research/Type = "Geant4_Modular"
+sv:Ph/Research/Modules = 3 "g4em-standard_opt4" "g4h-phy_QGSP_BIC_HP" "g4decay"
+d:Ph/Research/CutForGamma = 0.05 mm
+d:Ph/Research/CutForElectron = 0.05 mm
+d:Ph/Research/CutForPositron = 0.05 mm
+d:Ph/Research/CutForProton = 0.05 mm
+
+# World
+s:Ge/World/Material = "G4_AIR"
+d:Ge/World/HLX = 50.0 cm
+d:Ge/World/HLY = 50.0 cm
+d:Ge/World/HLZ = 200.0 cm
+b:Ge/World/Invisible = "True"
+
+# EJ-200 with Birks' Law
+sv:Ma/EJ200/Components = 2 "Hydrogen" "Carbon"
+uv:Ma/EJ200/Fractions = 2 0.0847 0.9153
+d:Ma/EJ200/Density = 1.023 g/cm3
+d:Ma/EJ200/MeanExcitationEnergy = 64.7 eV
+s:Ma/EJ200/DefaultColor = "lightblue"
+u:Ma/EJ200/BirksConstant = 0.1232
+
+# Target scintillator
+s:Ge/TargetScint/Type = "TsBox"
+s:Ge/TargetScint/Parent = "World"
+s:Ge/TargetScint/Material = "EJ200"
+d:Ge/TargetScint/HLX = 25.0 mm
+d:Ge/TargetScint/HLY = 25.0 mm
+d:Ge/TargetScint/HLZ = 5.0 mm
+d:Ge/TargetScint/TransZ = 0.0 cm
+s:Ge/TargetScint/Color = "lightblue"
+
+# Proton beam
+s:So/Proton/Type = "Beam"
+s:So/Proton/Component = "BeamPosition"
+s:So/Proton/BeamParticle = "proton"
+d:So/Proton/BeamEnergy = 300 MeV
+u:So/Proton/BeamEnergySpread = 0.01
+s:So/Proton/BeamPositionDistribution = "Gaussian"
+s:So/Proton/BeamPositionCutoffShape = "Ellipse"
+d:So/Proton/BeamPositionCutoffX = 15.0 mm
+d:So/Proton/BeamPositionCutoffY = 15.0 mm
+d:So/Proton/BeamPositionSpreadX = 5.0 mm
+d:So/Proton/BeamPositionSpreadY = 5.0 mm
+s:So/Proton/BeamAngularDistribution = "Gaussian"
+d:So/Proton/BeamAngularCutoffX = 90. deg
+d:So/Proton/BeamAngularCutoffY = 90. deg
+d:So/Proton/BeamAngularSpreadX = 0.001 rad
+d:So/Proton/BeamAngularSpreadY = 0.001 rad
+i:So/Proton/NumberOfHistoriesInRun = 10000
+
+# Scorers
+s:Sc/EnergyDep/Quantity = "EnergyDeposit"
+s:Sc/EnergyDep/Component = "TargetScint"
+s:Sc/EnergyDep/OutputFile = "EnergyDep_300MeV_Res"
+s:Sc/EnergyDep/OutputType = "csv"
+b:Sc/EnergyDep/OutputToConsole = "TRUE"
+s:Sc/EnergyDep/IfOutputFileAlreadyExists = "Overwrite"
+
+s:Sc/Dose/Quantity = "DoseToMedium"
+s:Sc/Dose/Component = "TargetScint"
+s:Sc/Dose/OutputFile = "Dose_300MeV_Res"
+s:Sc/Dose/OutputType = "csv"
+b:Sc/Dose/OutputToConsole = "TRUE"
+s:Sc/Dose/IfOutputFileAlreadyExists = "Overwrite"
+
+s:Sc/ProtonLET/Quantity = "ProtonLET"
+s:Sc/ProtonLET/Component = "TargetScint"
+s:Sc/ProtonLET/OutputFile = "ProtonLET_300MeV_Res"
+s:Sc/ProtonLET/OutputType = "csv"
+b:Sc/ProtonLET/OutputToConsole = "TRUE"
+s:Sc/ProtonLET/IfOutputFileAlreadyExists = "Overwrite"
+
+s:Sc/EnergyDepZ/Quantity = "EnergyDeposit"
+s:Sc/EnergyDepZ/Component = "TargetScint"
+s:Sc/EnergyDepZ/OutputFile = "EnergyDepZ_300MeV_Res"
+s:Sc/EnergyDepZ/OutputType = "csv"
+s:Sc/EnergyDepZ/IfOutputFileAlreadyExists = "Overwrite"
+i:Sc/EnergyDepZ/ZBins = 100
+
+s:Sc/PhaseSpace/Quantity = "PhaseSpace"
+s:Sc/PhaseSpace/Surface = "TargetScint/ZMinusSurface"
+s:Sc/PhaseSpace/OutputFile = "PhSp_300MeV_Res"
+s:Sc/PhaseSpace/OutputType = "ASCII"
+s:Sc/PhaseSpace/IfOutputFileAlreadyExists = "Overwrite"
+b:Sc/PhaseSpace/IncludeTimeOfFlight = "True"
+b:Sc/PhaseSpace/IncludeTrackID = "True"
+b:Sc/PhaseSpace/IncludeEventID = "True"
+
+s:Sc/OutputDir = "../output/research/"

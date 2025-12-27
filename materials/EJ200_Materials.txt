@@ -1,0 +1,215 @@
+#==============================================================================
+# KAVACH BL4S OpenTOPAS Simulation - Material Definitions
+# Research-Grade Implementation
+#
+# EJ-200 Plastic Scintillator with EXPLICIT Birks Quenching Parameters
+# Based on: Eljen Technology datasheet, Torrisi (2000), Christl et al. (2021)
+#
+# Reference: kB = 0.0126 g/MeV/cm² (from proposal Table 3)
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# EJ-200 Plastic Scintillator (Target Detector)
+# PRIMARY MEASUREMENT TARGET
+#
+# Composition: C₉H₁₀ (Polyvinyltoluene base)
+# H/C ratio: 10/9 = 1.111
+# Mass fractions: H = 0.0847 (10*1.008/120.19), C = 0.9153 (9*12.01/120.19)
+#------------------------------------------------------------------------------
+sv:Ma/EJ200/Components = 2 "Hydrogen" "Carbon"
+uv:Ma/EJ200/Fractions  = 2 0.0847 0.9153
+d:Ma/EJ200/Density     = 1.023 g/cm3
+d:Ma/EJ200/MeanExcitationEnergy = 64.7 eV
+s:Ma/EJ200/DefaultColor = "cyan"
+
+#------------------------------------------------------------------------------
+# BIRKS QUENCHING PARAMETERS (CRITICAL FOR PROPOSAL)
+#
+# kB = 0.0126 g/MeV/cm² = 0.0126 cm/MeV when divided by density
+# In GEANT4/OpenTOPAS: BirksConstant is in mm/MeV
+# kB (mm/MeV) = 0.0126 g/MeV/cm² / (1.023 g/cm³) * 10 mm/cm = 0.1232 mm/MeV
+#
+# Literature values:
+#   - Torrisi (2000): kB ≈ 0.0126 g/MeV/cm² for plastic scintillators
+#   - Christl et al. (2021): kB = 0.0124 ± 0.0005 g/MeV/cm² for EJ-200
+#   - Birks (1964): Typical range 0.01-0.02 g/MeV/cm²
+#------------------------------------------------------------------------------
+d:Ma/EJ200/BirksConstant = 0.1232 mm/MeV
+
+# Scintillation properties (from Eljen Technology EJ-200 datasheet)
+# Light yield: 10,000 photons/MeV (64% of anthracene)
+# Rise time: 0.9 ns, Decay time: 2.1 ns
+# Peak emission: 425 nm (2.92 eV)
+d:Ma/EJ200/ScintillationYield = 10000 /MeV
+u:Ma/EJ200/ResolutionScale = 1.0
+d:Ma/EJ200/ScintillationTimeConstant1 = 2.1 ns
+
+# Optical properties
+# Refractive index: 1.58 (from datasheet)
+# Attenuation length: 380 cm (from datasheet)
+dv:Ma/EJ200/RIndex/Energies = 12 
+    2.00 2.25 2.50 2.75 2.92 3.00 3.10 3.20 3.30 3.40 3.50 3.60 eV
+uv:Ma/EJ200/RIndex/Values   = 12 
+    1.580 1.580 1.580 1.581 1.582 1.583 1.584 1.585 1.586 1.587 1.588 1.589
+
+dv:Ma/EJ200/AbsLength/Energies = 12 
+    2.00 2.25 2.50 2.75 2.92 3.00 3.10 3.20 3.30 3.40 3.50 3.60 eV
+dv:Ma/EJ200/AbsLength/Values   = 12 
+    400 395 390 385 380 378 375 370 365 355 340 320 cm
+
+# Scintillation emission spectrum (from Eljen datasheet)
+# Peak at 425 nm = 2.92 eV, FWHM ~ 50 nm
+dv:Ma/EJ200/ScintillationComponent1/Energies = 31
+    2.38 2.43 2.48 2.53 2.58 2.63 2.68 2.73 2.78 2.83
+    2.86 2.88 2.90 2.91 2.92 2.93 2.94 2.96 2.98 3.00
+    3.02 3.05 3.08 3.12 3.16 3.21 3.26 3.31 3.40 3.50 3.60 eV
+uv:Ma/EJ200/ScintillationComponent1/Values = 31
+    0.01 0.02 0.04 0.07 0.12 0.19 0.28 0.40 0.54 0.70
+    0.80 0.86 0.92 0.97 1.00 0.99 0.96 0.88 0.78 0.66
+    0.53 0.40 0.29 0.19 0.12 0.07 0.04 0.02 0.01 0.00 0.00
+
+#------------------------------------------------------------------------------
+# Trigger Scintillator Material (S1, S2)
+# EJ-200 per proposal Table 1: 100×100×5 mm³
+# Same as target but for trigger timing
+#------------------------------------------------------------------------------
+sv:Ma/TriggerScint/Components = 2 "Hydrogen" "Carbon"
+uv:Ma/TriggerScint/Fractions  = 2 0.0847 0.9153
+d:Ma/TriggerScint/Density     = 1.023 g/cm3
+d:Ma/TriggerScint/MeanExcitationEnergy = 64.7 eV
+s:Ma/TriggerScint/DefaultColor = "yellow"
+d:Ma/TriggerScint/BirksConstant = 0.1232 mm/MeV
+
+d:Ma/TriggerScint/ScintillationYield = 10000 /MeV
+u:Ma/TriggerScint/ResolutionScale = 1.0
+d:Ma/TriggerScint/ScintillationTimeConstant1 = 2.1 ns
+
+dv:Ma/TriggerScint/RIndex/Energies = 4 2.00 2.92 3.10 3.60 eV
+uv:Ma/TriggerScint/RIndex/Values   = 4 1.58 1.58 1.58 1.59
+
+dv:Ma/TriggerScint/AbsLength/Energies = 4 2.00 2.92 3.10 3.60 eV
+dv:Ma/TriggerScint/AbsLength/Values   = 4 400 380 375 320 cm
+
+dv:Ma/TriggerScint/ScintillationComponent1/Energies = 11
+    2.48 2.64 2.76 2.88 2.92 2.98 3.06 3.15 3.26 3.40 3.54 eV
+uv:Ma/TriggerScint/ScintillationComponent1/Values = 11
+    0.02 0.15 0.40 0.75 1.00 0.90 0.65 0.35 0.12 0.02 0.00
+
+#------------------------------------------------------------------------------
+# CO2 Gas for Threshold Cherenkov Counter
+# Per proposal: CO2 gas with adjustable threshold
+#
+# Threshold calculation:
+# β_threshold = 1/n = 1/1.00045 = 0.99955
+# γ_threshold = 1/√(1-β²) = 47.1
+#
+# Momentum threshold: p = mc * βγ
+#   Pion (m=139.6 MeV): p_th = 139.6 * 47.1 * 0.99955 ≈ 4.7 GeV/c
+#   Proton (m=938.3 MeV): p_th = 938.3 * 47.1 * 0.99955 ≈ 31 GeV/c
+#
+# At T09 momenta (0.5-6 GeV/c):
+#   - Pions: produce Cherenkov light for p > ~4.7 GeV/c (adjust pressure)
+#   - Protons: below threshold at all T09 momenta
+#
+# For better separation at 1-5 GeV/c, use higher pressure CO2 or He/CO2 mix
+#------------------------------------------------------------------------------
+sv:Ma/CO2Gas/Components = 2 "Carbon" "Oxygen"
+uv:Ma/CO2Gas/Fractions  = 2 0.2729 0.7271
+d:Ma/CO2Gas/Density     = 0.001842 g/cm3
+s:Ma/CO2Gas/DefaultColor = "white"
+
+# Refractive index for CO2 at STP (λ-dependent, Sellmeier)
+dv:Ma/CO2Gas/RIndex/Energies = 6 1.8 2.5 3.0 3.5 4.0 5.0 eV
+uv:Ma/CO2Gas/RIndex/Values   = 6 1.00043 1.00044 1.00045 1.00046 1.00048 1.00050
+
+#------------------------------------------------------------------------------
+# SF5 Lead Glass for Electromagnetic Calorimeter
+# 16 modules per proposal Table 1
+# Used for independent energy measurement reference
+#
+# Properties: X₀ = 2.51 cm, ρ = 4.08 g/cm³
+# Cherenkov radiator: n ≈ 1.67
+#------------------------------------------------------------------------------
+sv:Ma/LeadGlass/Components = 4 "Lead" "Oxygen" "Silicon" "Potassium"
+uv:Ma/LeadGlass/Fractions  = 4 0.5410 0.2840 0.1450 0.0300
+d:Ma/LeadGlass/Density     = 4.078 g/cm3
+d:Ma/LeadGlass/MeanExcitationEnergy = 526.4 eV
+s:Ma/LeadGlass/DefaultColor = "gray"
+
+# Length for radiation length calculation: X₀ = 2.51 cm
+# For 40 cm calorimeter: ~16 X₀ → full shower containment
+
+dv:Ma/LeadGlass/RIndex/Energies = 8 1.8 2.0 2.5 3.0 3.5 4.0 4.5 5.0 eV
+uv:Ma/LeadGlass/RIndex/Values   = 8 1.665 1.670 1.680 1.690 1.705 1.720 1.740 1.760
+
+dv:Ma/LeadGlass/AbsLength/Energies = 8 1.8 2.0 2.5 3.0 3.5 4.0 4.5 5.0 eV
+dv:Ma/LeadGlass/AbsLength/Values   = 8 150 100 50 30 20 15 10 5 cm
+
+#------------------------------------------------------------------------------
+# Delay Wire Chamber Gas (Ar/CO2 90:10)
+# Per proposal: 200 μm position resolution
+#------------------------------------------------------------------------------
+sv:Ma/DWCGas/Components = 3 "Argon" "Carbon" "Oxygen"
+uv:Ma/DWCGas/Fractions  = 3 0.90 0.0273 0.0727
+d:Ma/DWCGas/Density     = 0.00167 g/cm3
+s:Ma/DWCGas/DefaultColor = "lightblue"
+
+#------------------------------------------------------------------------------
+# Hamamatsu H10721-210 PMT Window (Borosilicate Glass)
+# Per proposal: Coupled to target scintillator via optical grease
+#------------------------------------------------------------------------------
+sv:Ma/Borosilicate/Components = 5 "Silicon" "Oxygen" "Boron" "Sodium" "Aluminum"
+uv:Ma/Borosilicate/Fractions  = 5 0.3772 0.5396 0.0401 0.0282 0.0116
+d:Ma/Borosilicate/Density     = 2.23 g/cm3
+s:Ma/Borosilicate/DefaultColor = "red"
+
+dv:Ma/Borosilicate/RIndex/Energies = 6 1.8 2.5 3.0 3.5 4.0 5.0 eV
+uv:Ma/Borosilicate/RIndex/Values   = 6 1.49 1.50 1.50 1.51 1.52 1.53
+
+dv:Ma/Borosilicate/AbsLength/Energies = 6 1.8 2.5 3.0 3.5 4.0 5.0 eV
+dv:Ma/Borosilicate/AbsLength/Values   = 6 100 80 60 40 20 5 cm
+
+#------------------------------------------------------------------------------
+# Bialkali Photocathode (K₂CsSb)
+# Hamamatsu H10721-210 specifications:
+#   - Peak QE: 25% at 400nm (3.1 eV)
+#   - Useful range: 300-650 nm
+#------------------------------------------------------------------------------
+sv:Ma/Bialkali/Components = 3 "Potassium" "Cesium" "Antimony"
+uv:Ma/Bialkali/Fractions  = 3 0.280 0.470 0.250
+d:Ma/Bialkali/Density     = 3.0 g/cm3
+s:Ma/Bialkali/DefaultColor = "blue"
+
+#------------------------------------------------------------------------------
+# Optical Grease (Silicone-based)
+# Index-matching between scintillator (n=1.58) and PMT (n=1.50)
+#------------------------------------------------------------------------------
+sv:Ma/OpticalGrease/Components = 4 "Carbon" "Hydrogen" "Oxygen" "Silicon"
+uv:Ma/OpticalGrease/Fractions  = 4 0.25 0.05 0.20 0.50
+d:Ma/OpticalGrease/Density     = 1.06 g/cm3
+s:Ma/OpticalGrease/DefaultColor = "transparent"
+
+dv:Ma/OpticalGrease/RIndex/Energies = 4 2.0 2.92 3.5 5.0 eV
+uv:Ma/OpticalGrease/RIndex/Values   = 4 1.465 1.465 1.467 1.470
+
+#------------------------------------------------------------------------------
+# Aluminum (Light-tight enclosure per proposal)
+#------------------------------------------------------------------------------
+sv:Ma/DetectorAl/Components = 1 "Aluminum"
+uv:Ma/DetectorAl/Fractions  = 1 1.0
+d:Ma/DetectorAl/Density     = 2.70 g/cm3
+s:Ma/DetectorAl/DefaultColor = "grey"
+
+#------------------------------------------------------------------------------
+# Air (beam transport between detectors)
+#------------------------------------------------------------------------------
+dv:Ma/Air/RIndex/Energies = 4 2.0 3.0 4.0 5.0 eV
+uv:Ma/Air/RIndex/Values   = 4 1.000293 1.000293 1.000293 1.000293
+
+#------------------------------------------------------------------------------
+# Mylar (for DWC windows/light shielding)
+#------------------------------------------------------------------------------
+sv:Ma/Mylar/Components = 3 "Carbon" "Hydrogen" "Oxygen"
+uv:Ma/Mylar/Fractions  = 3 0.625 0.042 0.333
+d:Ma/Mylar/Density     = 1.39 g/cm3
+s:Ma/Mylar/DefaultColor = "silver"
